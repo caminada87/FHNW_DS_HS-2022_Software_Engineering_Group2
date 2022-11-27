@@ -7,9 +7,9 @@
 
 ## About the Project
 ### Schedule
-> **26.11.2022**: Start
-> **17.12.2022**: Interim Presentation
-> **18.01.2023**: Deadline
+> **26.11.2022**: Start<br>
+> **17.12.2022**: Interim Presentation<br>
+> **18.01.2023**: Deadline<br>
 
 ### Goals
 The main task is to implement a small machinelearning model and get it to production. Important/assessed parts are: 
@@ -26,7 +26,8 @@ The main task is to implement a small machinelearning model and get it to produc
 - Created project structure
 - Created readme.md
 - Created .gitignore file
-- Created 
+- Created repository FHNW_DS_HS-2022_Software_Engineering_Group2 on GitHub
+- First Commit/Push
 
 > **26.11.2022:** 
 - Teams formed
