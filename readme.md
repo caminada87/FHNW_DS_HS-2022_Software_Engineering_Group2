@@ -22,6 +22,10 @@ The main task is to implement a small machinelearning model and get it to produc
 
 ## Project Log:
 
+> **29.11.2022**
+- Created Webapp (Flask, Sqlite, pytailwindcss)
+- Still ToDo: API for predictions
+
 > **27.11.2022**
 - Created project structure
 - Created readme.md
