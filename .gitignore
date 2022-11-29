@@ -131,7 +131,7 @@ dmypy.json
 #--END OF STANDARD FILE FROM GITHUB----------------------------------
 
 # ignore ALL files in ANY directories with the following Names
-data/
+data_science/data/
 key/
 keys/
 temp/
