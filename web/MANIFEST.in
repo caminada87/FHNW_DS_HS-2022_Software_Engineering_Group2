@@ -1,0 +1,4 @@
+include frontend/schema.sql
+graft frontend/static
+graft frontend/templates
+global-exclude *.pyc
