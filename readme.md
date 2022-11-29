@@ -23,6 +23,11 @@ The main task is to implement a small machinelearning model and get it to produc
 ## Project Log:
 
 > **29.11.2022**
+- Flask frontend using REST API for a fake prediction. 
+- Frontend saves that data into the DB and is able to show recent predictions.
+- ToDo: API: Access the actual model!
+
+> **28.11.2022**
 - Created Webapp (Flask, Sqlite, pytailwindcss)
 - Still ToDo: API for predictions
 

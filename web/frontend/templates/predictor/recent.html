@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Recent Predictions{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+
+
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full">
+                <thead class="border-b">
+                  <tr>
+                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                      #
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                      User Ip
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                      Land area
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                      Number of Bathrooms
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                      Predicted price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for prediction in recent_predictions %}
+                  <tr class="border-b">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ prediction['id'] }}
+                    </td>
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {{ prediction['user_ip'] }}
+                    </td>
+                    <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                        {{ prediction['land_area'] }}
+                    </td>
+                    <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                        {{ prediction['n_bathrooms'] }}
+                    </td>
+                    <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                        {{ prediction['prediction'] }}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
