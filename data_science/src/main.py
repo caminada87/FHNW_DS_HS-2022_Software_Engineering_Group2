@@ -41,7 +41,7 @@ def single_pred(model, long:float, lat:float, zipcode: int, municipality_name: s
 ## Main ##
 loaded_model = pickle.load(open(filename, 'rb'))
 
-y_pred = single_pred(loaded_model, long, lat, zipcode, municipality_name, object_type_name, build_year, living_area,
-                     num_rooms)
+
+
 
 print(y_pred)
