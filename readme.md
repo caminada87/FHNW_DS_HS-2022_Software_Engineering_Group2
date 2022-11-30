@@ -22,6 +22,9 @@ The main task is to implement a small machinelearning model and get it to produc
 
 ## Project Log:
 
+> **30.11.2022**
+- Created FHNW-Software-Eng-Group2 on Google Cloud Plattform  
+
 > **29.11.2022**
 - Flask frontend using REST API for a fake prediction. 
 - Frontend saves that data into the DB and is able to show recent predictions.
