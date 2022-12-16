@@ -20,7 +20,14 @@ The main task is to implement a small machinelearning model and get it to produc
 - Automated CI/CD pipeline
 - Cloud deployment (e.g. Goodle Cloud)
 
+### Software Architecture 
+This is the chosen architecture for our "House-Price-Predictor-App":
+![Architecture House-Price-Predictor-App](https://github.com/caminada87/FHNW_DS_HS-2022_Software_Engineering_Group2/blob/dev/images/SW-Eng_Gruppe-2_Architektur_House-Price-Predictor_v1.png)
+
 ## Project Log:
+
+> **16.12.2022**
+- Integrated Software-Architectur  
 
 > **30.11.2022**
 - Created FHNW-Software-Eng-Group2 on Google Cloud Plattform  
