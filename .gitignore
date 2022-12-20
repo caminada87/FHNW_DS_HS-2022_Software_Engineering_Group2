@@ -109,6 +109,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.idea
+pyvenv/
+pyvenv/Scripts/
 
 # Spyder project settings
 .spyderproject
@@ -131,9 +134,14 @@ dmypy.json
 #--END OF STANDARD FILE FROM GITHUB----------------------------------
 
 # ignore ALL files in ANY directories with the following Names
-data/
+data_science/data/
 key/
 keys/
 temp/
+<<<<<<< HEAD
 
 notes.md
+=======
+HAUA/
+HAUA/hello_world.py
+>>>>>>> f6b7c2b29327e7bd811369ecb3e1c0caddc76fdb
