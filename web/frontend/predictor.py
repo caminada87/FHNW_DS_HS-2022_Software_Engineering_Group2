@@ -15,9 +15,28 @@ bp = Blueprint('predictor', __name__)
 @bp.route('/', methods=('GET', 'POST'))
 def index()->str:
     if request.method == 'POST':
-        land_area: int = request.form['land_area']
-        n_bathrooms: int = request.form['n_bathrooms']
-        response: str = get('http://localhost:5001/', params={'land_area':str(land_area), 'n_bathrooms':str(n_bathrooms)}, headers={'Content-Type': 'application/json'}).json()
+        longitude: float = request.form['longitude']
+        latitude: float = request.form['latitude']
+        postal_code: int = request.form['postal_code']
+        city: str = request.form['city']
+        bulding_category: str = request.form['bulding_category']
+        build_year: int = request.form['build_year']
+        living_area: float = request.form['living_area']
+        num_rooms: float = request.form['num_rooms']
+
+        #land_area: int = request.form['land_area']
+        #n_bathrooms: int = request.form['n_bathrooms']
+        #response: str = get('http://localhost:5001/', params={'land_area':str(land_area), 'n_bathrooms':str(n_bathrooms)}, headers={'Content-Type': 'application/json'}).json()
+        params={'longitude':longitude,
+                'latitude':latitude,
+                'postal_code':postal_code,
+                'city':city,
+                'bulding_category':bulding_category,
+                'build_year':build_year,
+                'living_area':living_area,
+                'num_rooms':num_rooms
+        }
+        response: str = get('http://localhost:5001/', params=params, headers={'Content-Type': 'application/json'}).json()
         response_json = json.dumps(response) 
         db = get_db()
         db.execute(f"INSERT INTO prediction_query (user_data, query_data) VALUES ('{str(request.remote_addr)}', '{response_json}')")
