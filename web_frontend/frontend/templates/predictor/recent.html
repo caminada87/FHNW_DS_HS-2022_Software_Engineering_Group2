@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Recent Predictions{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+  <div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <table class="min-w-full">
+            <thead class="border-b">
+              <tr>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  #
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  User Ip
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Längengrad
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Breitengrad
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Postleitzahl
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Ort
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Geb&auml;udetyp
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Baujahr
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Wohnfl&auml;che
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Anzahl Zimmer
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Sch&auml;tzwert
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for prediction in recent_predictions %}
+              <tr class="border-b">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {{ prediction['id'] }}
+                </td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['user_ip'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['longitude'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['latitude'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['postal_code'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['city'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['building_category'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['build_year'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['living_area'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['num_rooms'] }}
+                </td>
+                <td class="text-sm text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                  {{ prediction['prediction'] }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

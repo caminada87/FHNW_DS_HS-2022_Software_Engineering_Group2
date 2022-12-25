@@ -2,11 +2,12 @@ import os
 
 from flask import Flask
 
-#Application factory function (This returns the web application!flas)
+#Application factory function (This returns the flask web application!)
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
+        #should be overwritten on deployment (random value)
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'frontend.sqlite'),
     )

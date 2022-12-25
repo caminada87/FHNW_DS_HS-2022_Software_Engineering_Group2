@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS api_keys;
+
+CREATE TABLE api_keys(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    consumer_name TEXT UNIQUE NOT NULL,
+    consumer_key TEXT UNIQUE NOT NULL,
+    user_id TEXT NOT NULL
+);
+
+CREATE TABLE developer(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+)

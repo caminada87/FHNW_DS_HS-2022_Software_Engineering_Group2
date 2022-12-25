@@ -13,25 +13,26 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         db = get_db()
         error = None
 
-        if not username:
-            error = 'Username is required.'
+        if not email:
+            error = 'Die Email Adresse muss angegeben werden.'
         elif not password:
-            error = 'Password is required.'
+            error = 'Ein Passwort wird ben&ouml;tigt.'
         
         if error is None:
             try:
+                #This way SQL-Lite3 DB driver takes over sanitizing User Inputs
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (email, password, permission) VALUES (?, ?, ?)",
+                    (email, generate_password_hash(password), 0),
                 )
                 db.commit()
             except db.IntegrityError:
-                error = f"User {username} is already registered."
+                error = f"Die {email} ist bereits registriert."
         else:
             return redirect(url_for('auth.login'))
 
@@ -41,18 +42,18 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         db = get_db()
         error = None
         user = db.execute(
-            'SELECT id, username, password FROM user WHERE username = ?', (username,)
+            'SELECT id, email, password FROM user WHERE email = ?', (email,)
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Diese Email ist noch nicht bei uns registriert.'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Das eingegebene Password ist falsch.'
 
         if error is None:
             session.clear()
@@ -71,7 +72,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT id, username, password FROM user WHERE id = ?', (user_id,)
+            'SELECT id, email, password FROM user WHERE id = ?', (user_id,)
         ).fetchone()
 
 @bp.route('/logout')

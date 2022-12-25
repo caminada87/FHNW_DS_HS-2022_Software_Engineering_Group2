@@ -27,10 +27,11 @@ class GeoLocation(Resource):
         geolocator = Nominatim(user_agent="housprice_agent")
         loc = geolocator.geocode(f'{street_num}, {street_address}, {city}, {postal_code}, Schweiz')
         answer = jsonify({'latitude': loc.latitude, 'longitude': loc.longitude})
-        print(answer)
+        
+        #print(answer)
         return answer
 
-class Predictor(Resource):
+class HousePricePrediction(Resource):
     def __init__(self):
         self.filename: str = r'.\data_science\model\decision_tree_model.sav'
         self.parser = reqparse.RequestParser()
@@ -49,33 +50,33 @@ class Predictor(Resource):
     def get(self):
         args = self.parser.parse_args()
 
-        long: float = float(args['longitude'])
-        lat: float = float(args['latitude'])
-        zipcode: int = int(args['postal_code'])
-        municipality_name: str = str(args['city'])
-        object_type_name: str = str(args['bulding_category'])
+        longitude: float = float(args['longitude'])
+        latitude: float = float(args['latitude'])
+        postal_code: int = int(args['postal_code'])
+        city: str = str(args['city'])
+        bulding_category: str = str(args['bulding_category'])
         build_year: int = int(args['build_year'])
         living_area: float = float(args['living_area'])
         num_rooms: float = float(args['num_rooms'])
 
-        request_dict = {'long': long, 
-                        'lat': lat, 
-                        'zipcode': zipcode, 
-                        'municipality_name': municipality_name,
-                        'object_type_name': object_type_name, 
+        request_dict = {'long': longitude, 
+                        'lat': latitude, 
+                        'zipcode': postal_code, 
+                        'municipality_name': city,
+                        'object_type_name': bulding_category, 
                         'build_year': build_year,
                         'living_area': living_area, 
                         'num_rooms': num_rooms}
 
         data_frame= pd.DataFrame(data=request_dict, index=[0])
+        print(data_frame)
         prediction: float = self.model.predict(data_frame)[0]
-        request_dict['prediction']=prediction
-        answer = jsonify(request_dict)
+        answer = jsonify({'predicted_price': prediction})
 
         #print (request_dict)
         return answer
 
-api.add_resource(Predictor, '/')
+api.add_resource(HousePricePrediction, '/HousePricePrediction')
 api.add_resource(GeoLocation, '/GeoLocation')
 
 if __name__ == '__main__':
