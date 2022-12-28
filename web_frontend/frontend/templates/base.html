@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <title>{% block title %}{% endblock %} - System Engineering Project</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
+<!--<body class="h-screen bg-gradient-to-r from-cyan-300 to-blue-400">-->
+<body class="bg-opacity-50 bg-[url('/static/img/bg.jpg')] bg-cover bg-no-repeat">
     <div class="space-y-3">
         <div class="flex w-full">
             {% include 'nav.html' %}
@@ -18,3 +20,4 @@
             </div>
         </div>
     </div>
+</body>

@@ -12,10 +12,7 @@ COPY . /app
 
 # Install production dependencies
 RUN pip install -r requirements.txt
-#RUN pip install ./dist/frontend-1.0.0-py3-none-any.whl
 RUN flask --app frontend init-db
-#RUN pip install uwsgi==2.0.19.1
-#RUN pip install gunicorn
 
 EXPOSE 5000
 
@@ -24,7 +21,4 @@ EXPOSE 5000
 # For environments with multiple CPU cores, increas the number of worker.
 # to be equal to the cores available.
 # Timeout is set to 0 to diable the timeouts of the workers to allow Cloud Run to handle instance scalling.
-#CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 frontend
-#CMD "flask --app frontend init-db"
-#CMD ["flask","--app","frontend","run"]
 CMD gunicorn --bind=0.0.0.0:5000 --forwarded-allow-ips="*" "frontend:create_app()"

@@ -1,0 +1,2 @@
+include api/schema.sql
+global-exclude *.pyc

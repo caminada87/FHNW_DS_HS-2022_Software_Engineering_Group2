@@ -6,18 +6,19 @@ FROM python:3.10.9
 ENV PYTHONNUNBUFFERED True
 
 #Copy local code to the container image.
-ENV APP_HOME /web
+ENV APP_HOME /app
 WORKDIR $APP_HOME
-COPY . ./
+COPY . /app
 
 # Install production dependencies
 RUN pip install -r requirements.txt
-#RUN pip install gunicorn
+RUN flask --app api init-db
+
+EXPOSE 5001
 
 # Run the web services on container startup. Gere we use the gunicorn
 # webserver, with one worker process and 8 threads.
 # For environments with multiple CPU cores, increas the number of worker.
 # to be equal to the cores available.
 # Timeout is set to 0 to diable the timeouts of the workers to allow Cloud Run to handle instance scalling.
-#CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 frontend
-CMD ["flask --app frontend init-db", "flask --app frontend run"]
+CMD gunicorn --bind=0.0.0.0:5001 --forwarded-allow-ips="*" "api:create_app()"

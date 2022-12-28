@@ -19,9 +19,12 @@ CREATE TABLE permission(
     permission_description TEXT NOT NULL
 );
 
+INSERT INTO permission (id, permission_name, permission_description) VALUES (-1, 'Unregistered', 'registration process');
 INSERT INTO permission (id, permission_name, permission_description) VALUES (0, 'User', 'login, predict, watch his predictions');
 INSERT INTO permission (id, permission_name, permission_description) VALUES (1, 'SuperUser', 'login, predict, watch all predictions');
 INSERT INTO permission (id, permission_name, permission_description) VALUES (2, 'Admin', 'login, CRUD predictions, CRUD users');
+
+INSERT INTO user (email, permission_id, password) VALUES ('scam87@gmail.com', 2, 'pbkdf2:sha256:260000$lIjiXc8EAdvL3FLG$62b93b2b739e84f1355f5db813eba3363c90c58d4a029e86fd31dca2108a45b0');
 
 CREATE TABLE predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

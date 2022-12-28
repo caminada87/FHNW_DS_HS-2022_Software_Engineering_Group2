@@ -34,9 +34,10 @@ def index()->str:
                 'num_rooms':num_rooms
         }
         params_json: str = json.dumps(params)
-
-        response: dict = get('http://localhost:5001/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        response_json: str = json.dumps(response) 
+        #Doesn't work in Docker container:
+        #response: dict = get('http://localhost:5001/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response: dict = get('http://web_api:5001/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response_json: str = json.dumps(response)
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('{str(request.remote_addr)}', '{params_json}', '{response_json}')")
         db.commit()
@@ -56,7 +57,8 @@ def recent()->str:
         query_data = json.loads(prediction['query_data'])
         prediction_data = json.loads(prediction['predicted_price'])
         import locale
-        locale.setlocale(locale.LC_ALL, 'en_US')
+        #Doesn't work in Docker container:
+        #locale.setlocale(locale.LC_ALL, 'en_US.utf8')
         predictions.append({'id': str(prediction['id']), 
                             'user_ip': prediction['user_ip'],
                             'longitude': query_data['longitude'],
@@ -67,6 +69,7 @@ def recent()->str:
                             'build_year': query_data['build_year'],
                             'living_area': query_data['living_area'],
                             'num_rooms': query_data['num_rooms'],
-                            'prediction': f"{int(prediction_data['predicted_price']):n}.- CHF".replace(',', '\'')
+                            #'prediction': f"{int(prediction_data['predicted_price']):n}.- CHF".replace(',', '\'')
+                            'prediction' : prediction_data['predicted_price']
                           })
     return render_template('predictor/recent.html', recent_predictions=predictions)

@@ -1,16 +1,20 @@
 import os
 
-from flask import Flask
+from flask import Flask, Blueprint
+from flask_restful import Api
+from flask_cors import CORS
 
 #Application factory function (This returns the flask web application!)
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
 
     app.config.from_mapping(
         #should be overwritten on deployment (random value)
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'frontend.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'api.sqlite'),
+        MODEL=os.path.join(app.instance_path, 'decision_tree_model.sav'),
     )
 
     if test_config is None:
@@ -25,20 +29,17 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    #a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World'
     
     from . import db
     db.init_app(app)
 
-    from . import auth
-    app.register_blueprint(auth.bp)
-
-    from . import predictor
-    app.register_blueprint(predictor.bp)
-    app.add_url_rule('/', endpoint='index')
-
+    from .geolocator import GeoLocation
+    from .predictor import HousePricePrediction
+    api_bp = Blueprint('api', __name__)
+    api = Api(api_bp)
+    api.add_resource(HousePricePrediction, '/HousePricePrediction')
+    api.add_resource(GeoLocation, '/GeoLocation')
+    
+    app.register_blueprint(api_bp)
+    
     return app
