@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Accountmanagement{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <table class="min-w-full">
+            <thead class="border-b">
+              <tr>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  #
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Email
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Berechtigung
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for account in accounts %}
+                <tr class="border-b" id = "{{ account['id'] }}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ account['id'] }}
+                    </td>
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <input type="text"
+                               class="form-control block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                               id="email_{{ account['id'] }}" 
+                               placeholder="Email Adresse" 
+                               value = "{{ account['email'] }}"
+                               onchange="checkEntryDBDiff({{ account['id'] }})" />
+                    </td>
+                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <select id="permission_id_{{ account['id'] }}" 
+                            name="permission_id" 
+                            class="form-select form-select-sm appearance-none block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label=".form-select-sm example"
+                            onchange="checkEntryDBDiff({{ account['id'] }})">
+                            {% for permission in permissions %}
+                                {% if permission['permission_name'] == account['permission_name'] %}
+                                    <option value="{{ permission['id'] }}" selected>{{ permission['permission_name'] }}</option>
+                                {% else %}
+                                    <option value="{{ permission['id'] }}">{{ permission['permission_name'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <button id="update_{{ account['id'] }}" onclick="updateEntry({{ account['id'] }})" hidden="true" class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-1.5 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                            Save Changes
+                        </button>
+                    </td>
+                    <td>
+                        <button id="delete_{{ account['id'] }}" onclick="deleteEntry({{ account['id'] }})" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-1.5 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="application/javascript">
+    function checkEntryDBDiff(id){
+        let xhr = new XMLHttpRequest();
+        let url = new URL('http://localhost:5001/account');
+        let checkMail = document.getElementById("email_" + id).value;
+        let checkPermissionId = document.getElementById("permission_id_" + id).value;
+        url.searchParams.set('id', id);
+        url.searchParams.set('email', checkMail);
+        url.searchParams.set('permId', checkPermissionId);
+        xhr.open('GET', url)
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) { // analyze HTTP status of the response
+                alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+            } else { // show the result
+                let resp = JSON.parse(xhr.response);
+                if(resp.email == checkMail && resp.permission_id == checkPermissionId){
+                    document.getElementById("update_" + id).hidden = true;
+                } else {
+                    document.getElementById("update_" + id).hidden = false;
+                }
+            }
+        }; 
+    }
+    function updateEntry(id){
+        let xhr = new XMLHttpRequest();
+        let url = new URL('http://localhost:5001/account');
+        let updateMail = document.getElementById("email_" + id).value;
+        let updatePermissionId = document.getElementById("permission_id_" + id).value;
+        url.searchParams.set('id', id);
+        url.searchParams.set('email', updateMail);
+        url.searchParams.set('permId', updatePermissionId);
+        xhr.open('POST', url)
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) { // analyze HTTP status of the response
+                alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+            } else { // show the result
+                let resp = JSON.parse(xhr.response);
+                checkEntryDBDiff(id);
+            }
+        };
+    }
+    function deleteEntry(id){
+        let xhr = new XMLHttpRequest();
+        let url = new URL('http://localhost:5001/account');
+        url.searchParams.set('id', id);
+        xhr.open('DELETE', url)
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) { // analyze HTTP status of the response
+                alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+            } else { // show the result
+                window.location.href = 'http://localhost:5001/accounts'
+            }
+        };
+    }
+</script>
+{% endblock %}

@@ -34,9 +34,13 @@ def index()->str:
                 'num_rooms':num_rooms
         }
         params_json: str = json.dumps(params)
+        headers = {'Content-Type': 'application/json', 
+                   'app-name':'frontend', 
+                   'api-key':'7c106cb1c4c040998b7a447e3a96d742'
+                  }
         #Doesn't work in Docker container:
-        #response: dict = get('http://localhost:5001/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        response: dict = get('http://web_api:5001/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        #response: dict = get('http://localhost:5001/HousePricePrediction', params=params, headers=headers).json()
+        response: dict = get('http://web_api:5001/HousePricePrediction', params=params, headers=headers).json()
         response_json: str = json.dumps(response)
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('{str(request.remote_addr)}', '{params_json}', '{response_json}')")
