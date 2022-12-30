@@ -6,7 +6,7 @@ on:
       - dev
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  APP_ID: continous-deployment
+  APP_ID: FHNW-Software-Eng-Group2
   RUN_REGION: us-east1
   SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
 jobs:
