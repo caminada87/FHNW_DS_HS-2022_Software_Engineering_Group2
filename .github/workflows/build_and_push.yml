@@ -69,13 +69,13 @@ jobs:
     - name: Build and Push Container
       run: |-
         docker build -f ./web_frontend/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }} .
-        docker push -f ./web_frontend/Dockerfile gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }}
+        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }}
         
         
     - name: Deploy to Cloud Run
       run: |-
         gcloud run deploy ${{ env.SERVICE }} \
           --region ${{ env.REGION }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }} \
           --platform "managed" \
           --quiet
