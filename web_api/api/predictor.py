@@ -4,6 +4,7 @@ import pandas as pd
 from flask import jsonify
 from flask_restful import Resource, reqparse
 from flask import current_app
+from .key import api_key_required
 
 class HousePricePrediction(Resource):
     def __init__(self):
@@ -21,6 +22,7 @@ class HousePricePrediction(Resource):
         with open(self.filename, 'rb') as pickle_file:
             self.model = pickle.load(pickle_file)
 
+    @api_key_required
     def get(self):
         args = self.parser.parse_args()
 

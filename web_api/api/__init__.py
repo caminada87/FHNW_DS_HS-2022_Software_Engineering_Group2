@@ -41,5 +41,13 @@ def create_app(test_config=None):
     api.add_resource(GeoLocation, '/GeoLocation')
     
     app.register_blueprint(api_bp)
+
+    from . import auth
+    app.register_blueprint(auth.bp)
+
+    from . import key
+    app.register_blueprint(key.bp)
+
+    #app.add_url_rule('/', view_func=auth.login)
     
     return app
