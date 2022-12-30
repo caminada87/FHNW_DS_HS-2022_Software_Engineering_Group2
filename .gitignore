@@ -138,6 +138,7 @@ data_science/data/
 key/
 keys/
 temp/
+keys.json
 
 notes.md
 HAUA/
