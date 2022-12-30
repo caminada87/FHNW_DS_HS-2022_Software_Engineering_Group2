@@ -64,11 +64,11 @@ jobs:
     #  args: ['up', '-d']
 
     # docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+    # docker build -f ./web_api/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }} .
+    # docker push -f ./web_api/Dockerfile gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }}
     - name: Build and Push Container
       run: |-
-        docker build -f ./web_api/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }} .
         docker build -f ./web_frontend/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }} .
-        docker push -f ./web_api/Dockerfile gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }}
         docker push -f ./web_frontend/Dockerfile gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }}
         
         
