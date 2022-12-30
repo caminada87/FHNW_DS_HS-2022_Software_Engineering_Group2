@@ -12,7 +12,7 @@ COPY . /app
 
 # Install production dependencies
 RUN pip install -r requirements.txt
-RUN flask --app frontend init-db
+#RUN flask --app frontend init-db
 
 EXPOSE 5000
 
