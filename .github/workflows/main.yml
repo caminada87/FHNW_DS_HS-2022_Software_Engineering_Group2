@@ -1,32 +1,38 @@
 # .github/workflows/deploy.yml
-name: Deploy to Cloud Run
+name: Deploy to Google Cloud Run 
 on:
   push:
     branches:
       - dev
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  APP_ID: FHNW-Software-Eng-Group2
-  RUN_REGION: us-east1
-  SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
 jobs:
   deploy:
-    name: Deploy to Cloud Run
+    name: Deploying 
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'to deploy')"
     steps:
-      - uses: actions/checkout@v2
-
-      # Setup gcloud CLI
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@v1
-        with:
-          version: "290.0.1"
-          service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      - name: Checkout
+        uses: actions/checkout@v2
 
       # Build and push image to Google Container Registry
-      - name: Build
-        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
+      - name: Setting up
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '286.0.0'
+          service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
+          service_account_email: ${{ secrets.SA_EMAIL }}
+          project_id: crucial-baton-369816
 
-      - name: Deploy
-        run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated
+      - name: Building (🏗)
+        run: |-
+          gcloud builds submit \
+            --tag gcr.io/crucial-baton-369816/fhnw-ds-hs-2022-software-engineering-group2
+
+      # Setup gcloud CLI
+      - name: Deploy (🚀)
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          service: fhnw-ds-hs-2022-software-engineering-group2
+          image: gcr.io/crucial-baton-369816/fhnw-ds-hs-2022-software-engineering-group2
+          region: europe-west6
+          credentials: ${{ secrets.GCP_SA_KEY_JSON }}
+          project_id: crucial-baton-369816
