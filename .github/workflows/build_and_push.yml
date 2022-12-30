@@ -66,8 +66,21 @@ jobs:
     # docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
     - name: Build and Push Container
       run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+        docker compose -f docker-compose.yml build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
         docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+
+    #- name: Build image
+    #    run: docker compose -f docker-compose.yml build
+
+
+    - name: Setup - Build testing image
+        run: docker-compose -f docker-compose.ci.yml build composer
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+
+
     - name: Deploy to Cloud Run
       run: |-
         gcloud run deploy ${{ env.SERVICE }} \
