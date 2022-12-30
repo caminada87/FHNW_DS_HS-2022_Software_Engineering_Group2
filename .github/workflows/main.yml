@@ -20,7 +20,7 @@ on:
 name: Build and Deploy to Cloud Run
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  SERVICE: FHNW-Software-Eng-Group2
+  SERVICE: house-predictor-app
   REGION: us-east1
   SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
 
