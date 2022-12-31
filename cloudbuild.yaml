@@ -1,4 +1,7 @@
-#cloudbuild.yaml
 steps:
+# Build the new docker image.
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest', '.']
+
 - name: ‘docker/compose:1.19.0’
   args: [‘up’, ‘-d’]
