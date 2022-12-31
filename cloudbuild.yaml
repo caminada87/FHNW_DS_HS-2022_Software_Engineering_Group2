@@ -3,7 +3,7 @@ steps:
   args: [
     '-p', 'us-central1-docker.pkg.dev/${PROJECT_ID}/web_frontend',
     '-f', './docker-compose.yml',
-    '--build', 'web_frontend'
+    'build', 'web_frontend'
   ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
