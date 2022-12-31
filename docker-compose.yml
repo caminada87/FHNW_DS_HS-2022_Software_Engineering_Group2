@@ -4,6 +4,7 @@ services:
   web_frontend:
     build: ./web_frontend
     container_name: frontend
+    image: web_frontend_dev_build
     expose: 
       - 5000
     ports:
@@ -12,6 +13,7 @@ services:
   web_api:
     build: ./web_api
     container_name: api
+    image: web_api_dev_build
     expose: 
       - 5001
     ports:
