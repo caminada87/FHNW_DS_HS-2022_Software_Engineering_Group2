@@ -1,10 +1,10 @@
 steps:
 # Build the new docker image.
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-f', './web_frontend','-t', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest', './web_frontend']
+  args: ['build', '-f', './web_frontend','-t', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest', '.']
 
 images:
-- 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest/web_frontend'
+- 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY
