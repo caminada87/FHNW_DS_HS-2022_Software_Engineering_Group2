@@ -1,13 +1,13 @@
 steps:
 - name: 'docker/compose:1.28.2'
   args: [
-    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest',
+    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose-web-frontend:latest',
     '-f', './docker-compose.yml',
     'build', 'web_frontend'
   ]
 - name: 'docker/compose:1.28.2'
   args: [
-    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest',
+    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose-web-api:latest',
     '-f', './docker-compose.yml',
     'build', 'web_api'
   ]
@@ -15,9 +15,15 @@ steps:
   args: [
     'tag',
     'web_frontend_dev_build',
-    'gcr.io/$PROJECT_ID/gcb-docker-compose:latest'
+    'gcr.io/$PROJECT_ID/gcb-docker-compose-web-frontend:latest'
   ]
-images: ['gcr.io/$PROJECT_ID/gcb-docker-compose:latest']
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'tag',
+    'web_api_dev_build',
+    'gcr.io/$PROJECT_ID/gcb-docker-compose-web-api:latest'
+  ]
+images: ['gcr.io/$PROJECT_ID/gcb-docker-compose-web-frontend:latest', 'gcr.io/$PROJECT_ID/gcb-docker-compose-web-api:latest']
 
 #steps:
 # Build the new docker image.
