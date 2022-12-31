@@ -20,5 +20,5 @@ images: ['us-central1-docker.pkg.dev/${PROJECT_ID}/web_frontend/web_frontend_dev
 
 #images:
 #- 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest'
-#options:
-#  logging: CLOUD_LOGGING_ONLY
+options:
+  logging: CLOUD_LOGGING_ONLY
