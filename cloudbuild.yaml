@@ -5,6 +5,12 @@ steps:
     '-f', './docker-compose.yml',
     'build', 'web_frontend'
   ]
+- name: 'docker/compose:1.28.2'
+  args: [
+    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest',
+    '-f', './docker-compose.yml',
+    'build', 'web_api'
+  ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'tag',
