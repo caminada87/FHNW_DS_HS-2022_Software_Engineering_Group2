@@ -1,7 +1,7 @@
 steps:
 - name: 'docker/compose:1.28.2'
   args: [
-    '-p', 'us-central1-docker.pkg.dev/${PROJECT_ID}/web_frontend',
+    '-p', 'gcr.io/$PROJECT_ID/gcb-docker-compose:latest',
     '-f', './docker-compose.yml',
     'build', 'web_frontend'
   ]
@@ -9,9 +9,9 @@ steps:
   args: [
     'tag',
     'web_frontend_dev_build',
-    'us-central1-docker.pkg.dev/${PROJECT_ID}/web_frontend/web_frontend_dev_build'
+    'gcr.io/$PROJECT_ID/gcb-docker-compose:latest'
   ]
-images: ['us-central1-docker.pkg.dev/${PROJECT_ID}/web_frontend/web_frontend_dev_build']
+images: ['gcr.io/$PROJECT_ID/gcb-docker-compose:latest']
 
 #steps:
 # Build the new docker image.
