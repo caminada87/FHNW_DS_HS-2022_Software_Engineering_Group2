@@ -48,9 +48,9 @@ jobs:
 
     # Alternative option - authentication via credentials json
     - id: 'auth'
-       uses: 'google-github-actions/auth@v1'
-       with:
-         credentials_json: '${{ env.service_account_key }}'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ env.service_account_key }}'
     
     # Setup gcloud CLI
     - name: Set up Cloud SDK
