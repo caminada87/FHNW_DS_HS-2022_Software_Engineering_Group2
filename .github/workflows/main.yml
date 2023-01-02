@@ -12,60 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-on:
-  push:
-    branches:
-    - dev
-
-name: Build and Deploy to Cloud Run
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  SERVICE: house-predictor-app
-  REGION: us-east1
-  SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    # Add "id-token" with the intended permissions.
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    # Configure Workload Identity Federation and generate an access token.
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-
-    # Alternative option - authentication via credentials json
-    # - id: 'auth'
-    #   uses: 'google-github-actions/auth@v1'
-    #   with:
-    #     credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-
-    # Setup gcloud CLI
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-
-    - name: Authorize Docker push
-      run: gcloud auth configure-docker
-
-    - name: Build and Push Container
-      run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
-    - name: Deploy to Cloud Run
-      run: |-
-        gcloud run deploy ${{ env.SERVICE }} \
-          --region ${{ env.REGION }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
-          --platform "managed" \
-          --quiet
+#on:
+#  push:
+#    branches:
+#    - dev
+#
+#name: Build and Deploy to Cloud Run
+#env:
+#  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+#  SERVICE: house-predictor-app
+#  REGION: us-east1
+#  SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#
+#    # Add "id-token" with the intended permissions.
+#    permissions:
+#      contents: 'read'
+#      id-token: 'write'
+#
+#    steps:
+#    - name: Checkout
+#      uses: actions/checkout@v3
+#
+#    # Configure Workload Identity Federation and generate an access token.
+#    - id: 'auth'
+#      name: 'Authenticate to Google Cloud'
+#      uses: 'google-github-actions/auth@v1'
+#      with:
+#        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+#        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+#
+#    # Alternative option - authentication via credentials json
+#    # - id: 'auth'
+#    #   uses: 'google-github-actions/auth@v1'
+#    #   with:
+#    #     credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+#
+#    # Setup gcloud CLI
+#    - name: Set up Cloud SDK
+#      uses: google-github-actions/setup-gcloud@v1
+#
+#    - name: Authorize Docker push
+#      run: gcloud auth configure-docker
+#
+#    - name: Build and Push Container
+#      run: |-
+#        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+#        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+#    - name: Deploy to Cloud Run
+#      run: |-
+#        gcloud run deploy ${{ env.SERVICE }} \
+#          --region ${{ env.REGION }} \
+#          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+#          --platform "managed" \
+#          --quiet
