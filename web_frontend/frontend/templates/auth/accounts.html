@@ -84,6 +84,7 @@
             if (xhr.status != 200) { // analyze HTTP status of the response
                 alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
             } else { // show the result
+                //alert(xhr.response)
                 let resp = JSON.parse(xhr.response);
                 if(resp.email == checkMail && resp.permission_id == checkPermissionId){
                     document.getElementById("update_" + id).hidden = true;

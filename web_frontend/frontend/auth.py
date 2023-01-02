@@ -111,7 +111,7 @@ def accounts():
 @login_required
 def account():
     #nur admins!
-
+    print('test1')
     if g.user['permission_id'] == 2:
         user_form_id: int = int(request.args.get('id'))
         if request.method == 'GET':
