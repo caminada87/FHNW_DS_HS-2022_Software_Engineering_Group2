@@ -39,7 +39,7 @@ def index()->str:
         #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        response: dict = get('http://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         response_json: str = json.dumps(response)
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('{str(request.remote_addr)}', '{params_json}', '{response_json}')")
@@ -59,7 +59,7 @@ def recent()->str:
     for prediction in recent_predictions:
         query_data = json.loads(prediction['query_data'])
         prediction_data = json.loads(prediction['predicted_price'])
-        import locale
+        #import locale
         #Doesn't work in Docker container:
         #locale.setlocale(locale.LC_ALL, 'en_US.utf8')
         predictions.append({'id': str(prediction['id']), 
