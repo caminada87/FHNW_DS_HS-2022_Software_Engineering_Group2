@@ -14,7 +14,7 @@ def create_app(test_config=None):
         #should be overwritten on deployment (random value)
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'frontend.sqlite'),
-        MODEL=os.path.join(app.instance_path, 'decision_tree_model.sav')
+        MODEL=os.path.join(app.instance_path, '../frontend/static/decision_tree_model.sav')
     )
 
     if test_config is None:
