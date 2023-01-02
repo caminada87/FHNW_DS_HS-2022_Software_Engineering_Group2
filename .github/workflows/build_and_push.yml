@@ -43,6 +43,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
+        service_account_email: ${{ env.service_account_email }}
         credentials_json: '${{ env.service_account_key }}'
 
     - name: Authorize Docker push
