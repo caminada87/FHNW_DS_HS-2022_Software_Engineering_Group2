@@ -10,7 +10,7 @@ from requests import get
 
 import json
 
-bp = Blueprint('predictor', __name__)
+bp = Blueprint('prediction', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
 def index()->str:
@@ -36,15 +36,15 @@ def index()->str:
 
         params_json: str = json.dumps(params)
         #Doesn't work in Docker container:
-        response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        #response: dict = get('http://web_api:5001/HousePricePrediction', params=params, headers=headers).json()
+        #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response: dict = get('http://0.0.0.0:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         response_json: str = json.dumps(response)
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('{str(request.remote_addr)}', '{params_json}', '{response_json}')")
         db.commit()
-        return redirect(url_for('predictor.recent'))
+        return redirect(url_for('prediction.recent'))
     else:
-        return render_template('predictor/index.html')
+        return render_template('prediction/index.html')
 
 @bp.route('/recent')
 def recent()->str:
@@ -73,4 +73,4 @@ def recent()->str:
                             #'prediction': f"{int(prediction_data['predicted_price']):n}.- CHF".replace(',', '\'')
                             'prediction' : prediction_data['predicted_price']
                           })
-    return render_template('predictor/recent.html', recent_predictions=predictions)
+    return render_template('prediction/recent.html', recent_predictions=predictions)

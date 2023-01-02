@@ -20,7 +20,7 @@ on:
 name: Build and Deploy to Cloud Run
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
-  SERVICE: fhnw-ds-hs-2022-software-engineering-group2
+  SERVICE: fhnw-ds-hs-2022-software-engineering-group
   REGION: europe-west6
   service_account_email: ${{ secrets.SA_EMAIL }}
   service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
