@@ -21,9 +21,11 @@ on:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-    PROJECT_ID: ${{ secrets.PROJECT_ID }}
-    RUN_REGION: us-central1
-    SERVICE_NAME: super-simple-service
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  SERVICE: fhnw-ds-hs-2022-software-engineering-group2
+  REGION: europe-west6
+  service_account_email: ${{ secrets.SA_EMAIL }}
+  service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 
 jobs:
     setup-build-deploy:
