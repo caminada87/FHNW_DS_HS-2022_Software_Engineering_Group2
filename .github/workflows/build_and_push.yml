@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Build and Deploy to Cloud Run
-
 on:
-    push:
-        branches:
-            - dev
+  push:
+    branches:
+    - dev
 
-# Environment variables available to all jobs and steps in this workflow
+name: Build and Deploy to Cloud Run
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   SERVICE: fhnw-ds-hs-2022-software-engineering-group2
@@ -28,33 +26,43 @@ env:
   service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 
 jobs:
-    setup-build-deploy:
-        name: Setup, Build, and Deploy
-        runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v1
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-            # Setup gcloud CLI
-            - id: 'auth'
-              name: 'Authenticate to Google Cloud'
-              uses: 'google-github-actions/auth@v1'
-              with:
-                credentials_json: '${{ env.service_account_key }}'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
 
-            # Configure gcloud CLI
-            - name: gcloud Set up
-              run: |
-                  gcloud config set project $PROJECT_ID
-            # Build and push image to Google Container Registry
-            - name: Build
-              run: |
-                  gcloud builds submit -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
-            # Deploy image to Cloud Run
-            - name: Deploy
-              run: |
-                  gcloud run deploy $SERVICE_NAME \
-                    --region $RUN_REGION \
-                    --image gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
-                    --platform managed
+    # Alternative option - authentication via credentials json
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ env.service_account_key }}'
+    
+    # Setup gcloud CLI
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker
+
+    - name: Build and Push Container
+      run: |-
+        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+
+    - name: Deploy to Cloud Run
+      run: |-
+        gcloud run deploy ${{ env.SERVICE }} \
+          --region ${{ env.REGION }} \
+          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+          --platform "managed"
+
+
+
