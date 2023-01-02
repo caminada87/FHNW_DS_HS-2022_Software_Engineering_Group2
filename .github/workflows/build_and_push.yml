@@ -38,21 +38,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-  # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0
+    # Alternative option - authentication via credentials json
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
       with:
-        service_account_email: ${{ env.service_account_email }}
-        service_account_key: ${{ env.service_account_key }}
-        export_default_credentials: true
-
-    - name: Authorize Docker push
-      run: gcloud auth configure-docker
-
-    - name: Build and Push Container
-      run: |-
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
-
+        credentials_json: '${{ env.service_account_key }}'
+        
     # Setup gcloud CLI
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
