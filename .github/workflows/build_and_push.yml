@@ -51,7 +51,7 @@ jobs:
     #   uses: 'google-github-actions/auth@v1'
     #   with:
     #     credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-
+    
     # Setup gcloud CLI
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
@@ -59,23 +59,15 @@ jobs:
     - name: Authorize Docker push
       run: gcloud auth configure-docker
 
-    # running docker-compose
-    #- name: 'docker/compose:1.26.2'
-    #  args: ['up', '-d']
-
-    # docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
-    # docker build -f ./web_api/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }} .
-    # docker push -f ./web_api/Dockerfile gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:api_${{  github.sha }}
     - name: Build and Push Container
       run: |-
-        docker build -f ./web_frontend/Dockerfile -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }} .
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }}
-        
-        
+        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+
     - name: Deploy to Cloud Run
       run: |-
         gcloud run deploy ${{ env.SERVICE }} \
           --region ${{ env.REGION }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:frontend_${{  github.sha }} \
+          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
           --platform "managed" \
           --quiet

@@ -1,79 +1,54 @@
-from flask import(
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
-from werkzeug.exceptions import abort
+import os
+import pickle
+import pandas as pd
+from flask import jsonify
+from flask_restful import Resource, reqparse
+from flask import current_app
+from .auth import login_required
 
-from frontend.auth import login_required
-from frontend.db import get_db
+class HousePricePrediction(Resource):
+    def __init__(self):
+        self.filename: str = current_app.config['MODEL']
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('longitude', type=float, location='args', default=0.0)
+        self.parser.add_argument('latitude', type=float, location='args', default=0.0)
+        self.parser.add_argument('postal_code', type=int, location='args', default=5420)
+        self.parser.add_argument('city', type=str, location='args', default='Ehrendingen')
+        self.parser.add_argument('bulding_category', type=str, location='args', default='Einfamilienhaus')
+        self.parser.add_argument('build_year', type=int, location='args', default=2000)
+        self.parser.add_argument('living_area', type=float, location='args', default=200.0)
+        self.parser.add_argument('num_rooms', type=float, location='args', default=7)
 
-from requests import get
+        with open(self.filename, 'rb') as pickle_file:
+            self.model = pickle.load(pickle_file)
 
-import json
+    def get(self):
+        args = self.parser.parse_args()
 
-bp = Blueprint('predictor', __name__)
+        print(self.filename)
 
-@bp.route('/', methods=('GET', 'POST'))
-def index()->str:
-    if request.method == 'POST':
-        longitude: float = request.form['longitude']
-        latitude: float = request.form['latitude']
-        postal_code: int = request.form['postal_code']
-        city: str = request.form['city']
-        bulding_category: str = request.form['bulding_category']
-        build_year: int = request.form['build_year']
-        living_area: float = request.form['living_area']
-        num_rooms: float = request.form['num_rooms']
+        longitude: float = float(args['longitude'])
+        latitude: float = float(args['latitude'])
+        postal_code: int = int(args['postal_code'])
+        city: str = str(args['city'])
+        bulding_category: str = str(args['bulding_category'])
+        build_year: int = int(args['build_year'])
+        living_area: float = float(args['living_area'])
+        num_rooms: float = float(args['num_rooms'])
 
-        params: dict = {'longitude':longitude,
-                'latitude':latitude,
-                'postal_code':postal_code,
-                'city':city,
-                'bulding_category':bulding_category,
-                'build_year':build_year,
-                'living_area':living_area,
-                'num_rooms':num_rooms
-        }
-        params_json: str = json.dumps(params)
-        headers = {'Content-Type': 'application/json', 
-                   'app-name':'frontend', 
-                   'api-key':'7c106cb1c4c040998b7a447e3a96d742'
-                  }
-        #Doesn't work in Docker container:
-        #response: dict = get('http://localhost:5001/HousePricePrediction', params=params, headers=headers).json()
-        response: dict = get('http://web_api:5001/HousePricePrediction', params=params, headers=headers).json()
-        response_json: str = json.dumps(response)
-        db = get_db()
-        db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('{str(request.remote_addr)}', '{params_json}', '{response_json}')")
-        db.commit()
-        return redirect(url_for('predictor.recent'))
-    else:
-        return render_template('predictor/index.html')
+        request_dict = {'long': longitude, 
+                        'lat': latitude, 
+                        'zipcode': postal_code, 
+                        'municipality_name': city,
+                        'object_type_name': bulding_category, 
+                        'build_year': build_year,
+                        'living_area': living_area, 
+                        'num_rooms': num_rooms}
 
-@bp.route('/recent')
-def recent()->str:
-    db = get_db()
-    #list of tuples
-    recent_predictions = db.execute(
-        'SELECT id, user_ip, query_data, predicted_price FROM predictions ORDER BY id DESC LIMIT 50'
-    ).fetchall()
-    predictions: list = []
-    for prediction in recent_predictions:
-        query_data = json.loads(prediction['query_data'])
-        prediction_data = json.loads(prediction['predicted_price'])
-        import locale
-        #Doesn't work in Docker container:
-        #locale.setlocale(locale.LC_ALL, 'en_US.utf8')
-        predictions.append({'id': str(prediction['id']), 
-                            'user_ip': prediction['user_ip'],
-                            'longitude': query_data['longitude'],
-                            'latitude': query_data['latitude'], 
-                            'postal_code': query_data['postal_code'], 
-                            'city': query_data['city'],
-                            'building_category': query_data['bulding_category'],
-                            'build_year': query_data['build_year'],
-                            'living_area': query_data['living_area'],
-                            'num_rooms': query_data['num_rooms'],
-                            #'prediction': f"{int(prediction_data['predicted_price']):n}.- CHF".replace(',', '\'')
-                            'prediction' : prediction_data['predicted_price']
-                          })
-    return render_template('predictor/recent.html', recent_predictions=predictions)
+        data_frame= pd.DataFrame(data=request_dict, index=[0])
+        print(data_frame)
+        prediction: float = self.model.predict(data_frame)[0]
+        answer = jsonify({'predicted_price': prediction})
+
+        print (request_dict)
+        return answer
