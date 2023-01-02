@@ -109,8 +109,9 @@ def accounts():
 
 @bp.route('/account', methods=['GET', 'POST', 'DELETE'])
 @login_required
-def account_check()->bool:
+def account():
     #nur admins!
+
     if g.user['permission_id'] == 2:
         user_form_id: int = int(request.args.get('id'))
         if request.method == 'GET':
