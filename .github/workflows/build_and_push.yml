@@ -48,6 +48,8 @@ jobs:
     # Setup gcloud CLI
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
+      with:
+        credentials_json: '${{ env.service_account_key }}'
 
     - name: Authorize Docker push
       run: gcloud auth configure-docker
