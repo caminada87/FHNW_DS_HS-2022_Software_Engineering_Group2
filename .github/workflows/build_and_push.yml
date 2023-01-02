@@ -23,7 +23,7 @@ env:
   SERVICE: fhnw-ds-hs-2022-software-engineering-group2
   REGION: europe-west6
   service_account_email: ${{ secrets.SA_EMAIL }}
-  service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+  service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
 
 jobs:
   deploy:
