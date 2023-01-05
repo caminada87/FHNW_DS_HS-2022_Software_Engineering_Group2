@@ -7,6 +7,8 @@ from frontend.auth import login_required
 from frontend.db import get_db
 
 from requests import get
+from requests_toolbelt.adapters import appengine
+import urlfetch
 
 import json
 
@@ -35,6 +37,7 @@ def index()->str:
         }
 
         params_json: str = json.dumps(params)
+        appengine.monkeypatch()
         #Doesn't work in Docker container:
         #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
