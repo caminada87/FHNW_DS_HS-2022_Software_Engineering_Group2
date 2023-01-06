@@ -48,10 +48,12 @@ def index()->str:
             validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
+        
+        response_json = response.content.decode('utf-8')
+        
         print('after get:')
         print('response')
         print(response.content.decode('utf-8'))
-        response_json = response.content.decode('utf-8')
         
         #response_json: str = json.dumps(response)
         #response_json = json.dumps({"predicted_price":790000})
