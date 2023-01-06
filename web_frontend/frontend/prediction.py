@@ -50,7 +50,7 @@ def index()->str:
         )
         print('after get:')
         print('response')
-        print(response.content)
+        print(response.content.decode('utf-8'))
         response_json = response.content.decode('utf-8')
         
         #response_json: str = json.dumps(response)
