@@ -6,8 +6,8 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
-from requests import get
-from requests_toolbelt.adapters import appengine
+#from requests import get
+#from requests_toolbelt.adapters import appengine
 
 import json
 import urlfetch
@@ -37,22 +37,22 @@ def index()->str:
         }
 
         params_json: str = json.dumps(params)
-        appengine.monkeypatch()
+        #appengine.monkeypatch()
         #Doesn't work in Docker container:
         #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        #print('before get:')
+        print('before get:')
         try:
             response = urlfetch.fetch(
                 url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
                 params=params,
                 method=urlfetch.GET,
                 validate_certificate=True,
-                headers={'Content-Type': 'application/json'}
+                headers={'Content-Type':'application/json'}
             )
-            #print('response:')
+            print('response:')
             #print(response)
             if response.status_code == 200:
                 response_json = response.content.decode('utf-8')
@@ -69,8 +69,6 @@ def index()->str:
             print('Exception!')
             print(err)
             return render_template('prediction/index.html')
-
-        
     else:
         return render_template('prediction/index.html')
 
