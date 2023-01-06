@@ -47,6 +47,7 @@ def index()->str:
             url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
             params=params,
             method=urlfetch.GET,
+            validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
         response_json = response.content.decode('utf-8')
