@@ -4,15 +4,12 @@ from flask import Flask, Blueprint
 from flask_restful import Api
 from flask_cors import CORS
 
-from requests_toolbelt.adapters import appengine
-
 #Application factory function (This returns the flask web application!)
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     CORS(app)
-    appengine.monkeypatch()
-
+    
     app.config.from_mapping(
         #should be overwritten on deployment (random value)
         SECRET_KEY='dev',
