@@ -41,26 +41,26 @@ def index()->str:
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         print('before get:')
-        response = urlfetch.fetch(
+        response: dict = urlfetch.fetch(
             url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
             params=params,
             method=urlfetch.GET,
             validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
-        
-        response_json = response.content.decode('utf-8')
-        
         print('after get:')
         print('response')
         print(response.content.decode('utf-8'))
+        response_json = response.content.decode('utf-8')
         
         #response_json: str = json.dumps(response)
         #response_json = json.dumps({"predicted_price":790000})
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
         db.commit()
-    return render_template('prediction/index.html')
+        return redirect(url_for('prediction.recent'))
+    else:
+        return render_template('prediction/index.html')
 
 @bp.route('/recent')
 def recent()->str:

@@ -47,7 +47,5 @@ class HousePricePrediction(Resource):
 
         data_frame= pd.DataFrame(data=request_dict, index=[0])
         prediction: int = int(self.model.predict(data_frame)[0])
-        print ('Antwort:')
-        print (prediction)
-        answer = jsonify({"predicted_price": prediction})
+        answer = jsonify({'predicted_price': prediction})
         return answer
