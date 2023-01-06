@@ -12,6 +12,7 @@ from requests_toolbelt.adapters import appengine
 import json
 import urlfetch
 
+appengine.monkeypatch()
 bp = Blueprint('prediction', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
@@ -37,12 +38,13 @@ def index()->str:
         }
 
         params_json: str = json.dumps(params)
-        appengine.monkeypatch()
+        
         #Doesn't work in Docker container:
         #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        print('before get:')
         response: dict = urlfetch.fetch(
             url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
             params=params,
@@ -50,10 +52,8 @@ def index()->str:
             validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
-        for i in range(1000000):
-            if i % 10000 == 0:
-                print (f'{i/10000}')
-        print('response:')
+        print('after get:')
+        print('response')
         print(response)
         response_json = response.content.decode('utf-8')
         
