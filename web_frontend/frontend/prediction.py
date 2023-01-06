@@ -51,6 +51,8 @@ def index()->str:
             headers={'Content-Type': 'application/json'}
         )
         response_json = response.content.decode('utf-8')
+        print('response:')
+        print(response_json)
         #response_json: str = json.dumps(response)
         #response_json = json.dumps({"predicted_price":790000})
         db = get_db()
