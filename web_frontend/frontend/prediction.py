@@ -10,7 +10,7 @@ from requests import get
 from requests_toolbelt.adapters import appengine
 
 import json
-from google.appengine.api import urlfetch
+import urlfetch
 
 bp = Blueprint('prediction', __name__)
 
@@ -44,15 +44,18 @@ def index()->str:
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #print('before get:')
-        response = urlfetch.fetch(
-            url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-            payload=params_json,
-            method= urlfetch.PUT,
-            deadline=30,
-            validate_certificate=True
-        )
+        try:
+            response = urlfetch.fetch(
+                url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
+                params=params_json,
+                method=urlfetch.GET,
+                validate_certificate=True,
+                headers={'Content-Type': 'application/json'}
+            )
+        except Exception as err:
+            print('Exception!')
+            print(err)
 
-        response_json = response.content.decode('utf-8')
         #print('response:')
         #print(response)
         if response.status_code == 200:

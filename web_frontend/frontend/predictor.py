@@ -22,7 +22,7 @@ class HousePricePrediction(Resource):
         with open(self.filename, 'rb') as pickle_file:
             self.model = pickle.load(pickle_file)
 
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
 
         #print(self.filename)
@@ -47,5 +47,7 @@ class HousePricePrediction(Resource):
 
         data_frame= pd.DataFrame(data=request_dict, index=[0])
         prediction: int = int(self.model.predict(data_frame)[0])
+        print ('Antwort:')
+        print (prediction)
         answer = jsonify({'predicted_price': prediction})
         return answer
