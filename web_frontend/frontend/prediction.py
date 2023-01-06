@@ -54,7 +54,7 @@ def index()->str:
             print(response.getContentText())
         except Exception as err:
             print('Exception!')
-            print(err.message)
+            print(err)
 
         #print('response:')
         #print(response)
