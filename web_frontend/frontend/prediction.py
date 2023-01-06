@@ -6,13 +6,9 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
-from requests import get
-from requests_toolbelt.adapters import appengine
-
 import json
 import urlfetch
 
-appengine.monkeypatch()
 bp = Blueprint('prediction', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
