@@ -42,9 +42,10 @@ def index()->str:
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         print('before get:')
         response: dict = urlfetch.fetch(
-            url='http://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
+            url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
             params=params,
             method=urlfetch.GET,
+            validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
         print('after get:')
