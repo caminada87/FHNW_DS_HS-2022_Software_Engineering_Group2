@@ -46,7 +46,7 @@ def index()->str:
         try: 
             response: dict = urlfetch.fetch(
                 url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-                payload=params,
+                params=params,
                 method=urlfetch.GET,
                 headers={'Content-Type': 'application/json'}
             )
