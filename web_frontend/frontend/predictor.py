@@ -51,6 +51,6 @@ class HousePricePrediction(Resource):
         answer = jsonify({'predicted_price': prediction})
 
         #print (request_dict)
-        print ('Antwort:')
-        print (prediction)
+        #print ('Antwort:')
+        #print (prediction)
         return answer
