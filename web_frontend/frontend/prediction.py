@@ -45,16 +45,16 @@ def index()->str:
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #print('before get:')
         try:
-            response = urlfetch.fetch(
+            response = urlfetch.get(
                 url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
                 params=params,
-                method=urlfetch.GET,
                 validate_certificate=True,
                 headers={'Content-Type': 'application/json'}
             )
+            print(response.getContentText())
         except Exception as err:
             print('Exception!')
-            print(err)
+            print(err.message)
 
         #print('response:')
         #print(response)
