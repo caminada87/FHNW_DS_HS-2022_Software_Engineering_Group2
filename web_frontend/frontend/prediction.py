@@ -43,7 +43,7 @@ def index()->str:
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        print('before get:')
+        #print('before get:')
         response = urlfetch.fetch(
             url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
             params=params,
@@ -52,8 +52,8 @@ def index()->str:
             headers={'Content-Type': 'application/json'}
         )
 
-        print('response:')
-        print(response)
+        #print('response:')
+        #print(response)
         response_json = response.content.decode('utf-8')
         
         #response_json: str = json.dumps(response)
