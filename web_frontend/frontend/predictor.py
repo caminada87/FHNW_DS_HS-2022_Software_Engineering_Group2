@@ -22,7 +22,7 @@ class HousePricePrediction(Resource):
         with open(self.filename, 'rb') as pickle_file:
             self.model = pickle.load(pickle_file)
 
-    def get(self):
+    def put(self):
         args = self.parser.parse_args()
 
         #print(self.filename)
