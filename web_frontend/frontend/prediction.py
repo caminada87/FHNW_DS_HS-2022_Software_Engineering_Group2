@@ -44,13 +44,17 @@ def index()->str:
         #https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #print('before get:')
-        response = urlfetch.fetch(
-            url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-            params=params,
-            method=urlfetch.GET,
-            validate_certificate=True,
-            headers={'Content-Type': 'application/json'}
-        )
+        try:
+            response = urlfetch.fetch(
+                url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
+                params=params,
+                method=urlfetch.GET,
+                validate_certificate=True,
+                headers={'Content-Type': 'application/json'}
+            )
+        except Exception as err:
+            print('Exception!')
+            print(err)
 
         #print('response:')
         #print(response)
