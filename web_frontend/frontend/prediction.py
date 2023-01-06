@@ -6,6 +6,9 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
+from requests import get
+from requests_toolbelt.adapters import appengine
+
 import json
 import urlfetch
 
@@ -34,7 +37,7 @@ def index()->str:
         }
 
         params_json: str = json.dumps(params)
-        
+        appengine.monkeypatch()
         #Doesn't work in Docker container:
         #response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         #response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
@@ -48,9 +51,9 @@ def index()->str:
             validate_certificate=True,
             headers={'Content-Type': 'application/json'}
         )
-        print('after get:')
-        print('response')
-        print(response.content.decode('utf-8'))
+
+        print('response:')
+        print(response)
         response_json = response.content.decode('utf-8')
         
         #response_json: str = json.dumps(response)
