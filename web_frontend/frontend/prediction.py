@@ -47,28 +47,30 @@ def index()->str:
         try:
             response = urlfetch.fetch(
                 url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-                params=params_json,
+                params=params,
                 method=urlfetch.GET,
                 validate_certificate=True,
                 headers={'Content-Type': 'application/json'}
             )
+            #print('response:')
+            #print(response)
+            if response.status_code == 200:
+                response_json = response.content.decode('utf-8')
+                #response_json: str = json.dumps(response)
+                #response_json = json.dumps({"predicted_price":790000})
+                db = get_db()
+                db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
+                db.commit()
+                return redirect(url_for('prediction.recent'))
+            else:
+                print (response.content)
+                return render_template('prediction/index.html')
         except Exception as err:
             print('Exception!')
             print(err)
-
-        #print('response:')
-        #print(response)
-        if response.status_code == 200:
-            response_json = response.content.decode('utf-8')
-            #response_json: str = json.dumps(response)
-            #response_json = json.dumps({"predicted_price":790000})
-            db = get_db()
-            db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
-            db.commit()
-            return redirect(url_for('prediction.recent'))
-        else:
-            print (response.content)
             return render_template('prediction/index.html')
+
+        
     else:
         return render_template('prediction/index.html')
 
