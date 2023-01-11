@@ -15,7 +15,7 @@
 on:
   push:
     branches:
-    - dev
+    - main
 
 name: Build and Deploy to Cloud Run - Prod
 env:
