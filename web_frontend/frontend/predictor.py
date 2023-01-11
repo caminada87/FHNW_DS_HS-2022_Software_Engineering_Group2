@@ -6,6 +6,7 @@ from flask_restful import Resource, reqparse
 from flask import current_app
 from .auth import login_required
 
+
 class HousePricePrediction(Resource):
     def __init__(self):
         self.filename: str = current_app.config['MODEL']
@@ -25,7 +26,7 @@ class HousePricePrediction(Resource):
     def get(self):
         args = self.parser.parse_args()
 
-        #print(self.filename)
+        # print(self.filename)
 
         longitude: float = float(args['longitude'])
         latitude: float = float(args['latitude'])
@@ -36,18 +37,18 @@ class HousePricePrediction(Resource):
         living_area: float = float(args['living_area'])
         num_rooms: float = float(args['num_rooms'])
 
-        request_dict = {'long': longitude, 
-                        'lat': latitude, 
-                        'zipcode': postal_code, 
+        request_dict = {'long': longitude,
+                        'lat': latitude,
+                        'zipcode': postal_code,
                         'municipality_name': city,
-                        'object_type_name': bulding_category, 
+                        'object_type_name': bulding_category,
                         'build_year': build_year,
-                        'living_area': living_area, 
+                        'living_area': living_area,
                         'num_rooms': num_rooms}
 
-        data_frame= pd.DataFrame(data=request_dict, index=[0])
+        data_frame = pd.DataFrame(data=request_dict, index=[0])
         prediction: int = int(self.model.predict(data_frame)[0])
-        print ('Antwort:')
-        print (prediction)
-        answer = jsonify({'predicted_price':prediction})
+        print('Antwort:')
+        print(prediction)
+        answer = jsonify({'predicted_price': prediction})
         return answer
