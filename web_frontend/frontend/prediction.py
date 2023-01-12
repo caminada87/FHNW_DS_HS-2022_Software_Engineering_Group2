@@ -10,7 +10,7 @@ from frontend.db import get_db
 # from requests_toolbelt.adapters import appengine
 
 import json
-import urlfetch
+import urllib3
 
 bp = Blueprint('prediction', __name__)
 
@@ -49,32 +49,27 @@ def index() -> str:
         # response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         print('before get:')
         try:
-            response = urlfetch.fetch(
-                url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-                params=params,
-                method=urlfetch.GET,
-                validate_certificate=True,
-                headers={'Content-Type': 'application/json'}
-            )
-            print('response:')
-            # print(response)
-            if response.status_code == 200:
-                response_json = response.content.decode('utf-8')
-                # response_json: str = json.dumps(response)
-                # response_json = json.dumps({"predicted_price":790000})
-                db = get_db()
-                db.execute(
-                    f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
-                db.commit()
-                return redirect(url_for('prediction.recent'))
-            else:
-                print(response.content)
-                return render_template('prediction/index.html')
-        except Exception as err:
-            print('Exception!')
-            print(err)
-            return render_template('prediction/index.html')
+            http = urllib3.PoolManager()
+            result = http.request('GET', 
+                                  'https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
+                                  fields=params)
+        except :
+            print('Caught exception fetching url')
+        
+        response_json: str = json.loads(result.data)
+        print('response:')
+        print(response_json)
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
+            ('127.0.0.1', params_json, json.dumps(response_json)),
+        )
+        db.commit()
+
+        return redirect(url_for('prediction.recent'))
     else:
+        print('else')
         return render_template('prediction/index.html')
 
 
