@@ -1,7 +1,7 @@
 from geopy.geocoders import Nominatim
 from flask import jsonify
 from flask_restful import Resource, reqparse
-
+from .auth import login_required
 
 class GeoLocation(Resource):
     def __init__(self):

@@ -1,25 +1,24 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify, current_app
 )
 from werkzeug.exceptions import abort
 
 from frontend.auth import login_required
 from frontend.db import get_db
-
-import urllib.request
-
+import pickle
 import json
-import os
+import pandas as pd
 
 bp = Blueprint('prediction', __name__)
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/', methods=['GET', 'POST'])
+@login_required
 def index() -> str:
-    """
-
-    """
     if request.method == 'POST':
+        filename: str = current_app.config['MODEL']
+        with open(filename, 'rb') as pickle_file:
+            model = pickle.load(pickle_file)
         longitude: float = request.form['longitude']
         latitude: float = request.form['latitude']
         postal_code: int = request.form['postal_code']
@@ -29,7 +28,16 @@ def index() -> str:
         living_area: float = request.form['living_area']
         num_rooms: float = request.form['num_rooms']
 
-        params: dict = {'longitude': longitude,
+        request_dict = {'long': longitude,
+                        'lat': latitude,
+                        'zipcode': postal_code,
+                        'municipality_name': city,
+                        'object_type_name': bulding_category,
+                        'build_year': build_year,
+                        'living_area': living_area,
+                        'num_rooms': num_rooms}
+
+        params_json = json.dumps({'longitude': longitude,
                         'latitude': latitude,
                         'postal_code': postal_code,
                         'city': city,
@@ -37,40 +45,25 @@ def index() -> str:
                         'build_year': build_year,
                         'living_area': living_area,
                         'num_rooms': num_rooms
-                        }
+                        })
 
-        params_json: str = json.dumps(params)
-        print('before get:')
-        # Doesn't work in Docker container:
-        # response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        # response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        # https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        # response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        #requests_toolbelt.adapters.appengine.monkeypatch()
-        #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        # response_json: str = json.dumps(response)
-        url = 'https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction'
-        query_string = urllib.parse.urlencode( params ) 
-        url = url + "?" + query_string 
-        with urllib.request.urlopen( url ) as response: 
-            response_text = response.read() 
-            print( response_text ) 
-            response_json: str = json.loads(response_text)
+        data_frame = pd.DataFrame(data=request_dict, index=[0])
+        prediction: int = int(model.predict(data_frame)[0])
+        response_json = json.dumps({'predicted_price': prediction})
 
-            db = get_db()
-            db.execute(
-                "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
-                ('127.0.0.1', params_json, json.dumps(response_json)),
-            )
-            db.commit()
+        db = get_db()
+        db.execute(
+            "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
+            ('127.0.0.1', params_json, response_json),
+        )
+        db.commit()
 
         return redirect(url_for('prediction.recent'))
     else:
-        print('else')
         return render_template('prediction/index.html')
 
 
-@bp.route('/recent')
+@bp.route('/recent', methods = ['GET'])
 def recent() -> str:
     db = get_db()
     # list of tuples
