@@ -6,8 +6,7 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
-from requests import get
-import requests_toolbelt.adapters.appengine
+import urllib.request
 
 import json
 import os
@@ -47,20 +46,23 @@ def index() -> str:
         # response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         # https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
         # response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        requests_toolbelt.adapters.appengine.monkeypatch()
-        response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-
-        response_json: str = json.dumps(response)
-
-        print('response:')
-        print(response)
-
-        db = get_db()
-        db.execute(
-            "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
-            ('127.0.0.1', params_json, response_json),
-        )
-        db.commit()
+        #requests_toolbelt.adapters.appengine.monkeypatch()
+        #response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        # response_json: str = json.dumps(response)
+        url = 'https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction'
+        query_string = urllib.parse.urlencode( params ) 
+        url = url + "?" + query_string 
+        with urllib.request.urlopen( url ) as response: 
+            response_text = response.read() 
+            print( response_text ) 
+            response_json: str = json.dumps(response_text)
+            
+            db = get_db()
+            db.execute(
+                "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
+                ('127.0.0.1', params_json, response_json),
+            )
+            db.commit()
 
         return redirect(url_for('prediction.recent'))
     else:
