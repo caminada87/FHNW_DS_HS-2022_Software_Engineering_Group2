@@ -9,7 +9,6 @@ from frontend.db import get_db
 from requests import get
 
 import json
-import urllib3
 
 bp = Blueprint('prediction', __name__)
 
