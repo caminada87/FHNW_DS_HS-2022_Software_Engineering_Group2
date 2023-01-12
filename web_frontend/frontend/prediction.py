@@ -6,8 +6,7 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
-# from requests import get
-# from requests_toolbelt.adapters import appengine
+from requests import get
 
 import json
 import urllib3
@@ -41,24 +40,17 @@ def index() -> str:
                         }
 
         params_json: str = json.dumps(params)
-        # appengine.monkeypatch()
+        print('before get:')
         # Doesn't work in Docker container:
         # response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         # response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         # https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        # response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        print('before get:')
-        try:
-            http = urllib3.PoolManager()
-            result = http.request('GET', 
-                                  'https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-                                  fields=params)
-        except :
-            print('Caught exception fetching url')
-        
-        response_json: str = json.loads(result.data)
+        response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response.raise_for_status()
+        response_json: str = json.loads(response.text)
+
         print('response:')
-        print(response_json)
+        print(response.text)
 
         db = get_db()
         db.execute(
