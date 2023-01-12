@@ -30,5 +30,5 @@ CREATE TABLE predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_ip TEXT NOT NULL,
     query_data TEXT NOT NULL,
-    predicted_price REAL NOT NULL
+    predicted_price TEXT NOT NULL
 );

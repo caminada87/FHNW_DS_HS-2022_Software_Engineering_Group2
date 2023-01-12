@@ -6,11 +6,9 @@ from werkzeug.exceptions import abort
 from frontend.auth import login_required
 from frontend.db import get_db
 
-# from requests import get
-# from requests_toolbelt.adapters import appengine
+from requests import get
 
 import json
-import urlfetch
 
 bp = Blueprint('prediction', __name__)
 
@@ -41,40 +39,28 @@ def index() -> str:
                         }
 
         params_json: str = json.dumps(params)
-        # appengine.monkeypatch()
+        print('before get:')
         # Doesn't work in Docker container:
         # response: dict = get('http://localhost:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         # response: dict = get('http://web:5000/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
         # https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        # response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
-        print('before get:')
-        try:
-            response = urlfetch.fetch(
-                url='https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction',
-                params=params,
-                method=urlfetch.GET,
-                validate_certificate=True,
-                headers={'Content-Type': 'application/json'}
-            )
-            print('response:')
-            # print(response)
-            if response.status_code == 200:
-                response_json = response.content.decode('utf-8')
-                # response_json: str = json.dumps(response)
-                # response_json = json.dumps({"predicted_price":790000})
-                db = get_db()
-                db.execute(
-                    f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
-                db.commit()
-                return redirect(url_for('prediction.recent'))
-            else:
-                print(response.content)
-                return render_template('prediction/index.html')
-        except Exception as err:
-            print('Exception!')
-            print(err)
-            return render_template('prediction/index.html')
+        response: dict = get('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/HousePricePrediction', params=params, headers={'Content-Type': 'application/json'}).json()
+        response.raise_for_status()
+        response_json: str = json.loads(response.text)
+
+        print('response:')
+        print(response.text)
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
+            ('127.0.0.1', params_json, json.dumps(response_json)),
+        )
+        db.commit()
+
+        return redirect(url_for('prediction.recent'))
     else:
+        print('else')
         return render_template('prediction/index.html')
 
 

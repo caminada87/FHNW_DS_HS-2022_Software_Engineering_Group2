@@ -4,8 +4,14 @@ from flask import Flask, Blueprint
 from flask_restful import Api
 from flask_cors import CORS
 
+import requests
+import requests_toolbelt.adapters.appengine
+
+
+
 #Application factory function (This returns the flask web application!)
 def create_app(test_config=None):
+    requests_toolbelt.adapters.appengine.monkeypatch()
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     CORS(app)
