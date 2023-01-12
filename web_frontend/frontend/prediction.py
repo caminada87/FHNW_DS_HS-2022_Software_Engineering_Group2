@@ -55,12 +55,12 @@ def index() -> str:
         with urllib.request.urlopen( url ) as response: 
             response_text = response.read() 
             print( response_text ) 
-            response_json: str = json.dumps(response_text)
-            
+            response_json: str = json.loads(response_text)
+
             db = get_db()
             db.execute(
                 "INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES (?, ?, ?)",
-                ('127.0.0.1', params_json, response_json),
+                ('127.0.0.1', params_json, json.dumps(response_json)),
             )
             db.commit()
 
