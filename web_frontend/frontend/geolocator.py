@@ -1,6 +1,7 @@
 from geopy.geocoders import Nominatim
 from flask import jsonify
 from flask_restful import Resource, reqparse
+from .auth import login_required
 
 class GeoLocation(Resource):
     def __init__(self):
@@ -9,6 +10,7 @@ class GeoLocation(Resource):
         self.parser.add_argument('city', type=str, location='args', default='Ehrendingen')
         self.parser.add_argument('street_address', type=str, location='args', default='Hauptstrasse')
         self.parser.add_argument('street_num', type=str, location='args', default='1A')
+
     def get(self):
         args = self.parser.parse_args()
 
@@ -19,6 +21,6 @@ class GeoLocation(Resource):
         geolocator = Nominatim(user_agent="housprice_agent")
         loc = geolocator.geocode(f'{street_num}, {street_address}, {city}, {postal_code}, Schweiz')
         answer = jsonify({'latitude': loc.latitude, 'longitude': loc.longitude})
-        
-        #print(answer)
+
+        # print(answer)
         return answer
