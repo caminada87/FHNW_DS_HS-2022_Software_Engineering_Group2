@@ -12,6 +12,7 @@ import urlfetch
 bp = Blueprint('prediction', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
+@login_required
 def index()->str:
     if request.method == 'POST':
         longitude: float = request.form['longitude']
@@ -64,6 +65,7 @@ def index()->str:
         return render_template('prediction/index.html', base_url=current_app.config['BASE_URL'])
 
 @bp.route('/recent')
+@login_required
 def recent()->str:
     db = get_db()
     #list of tuples

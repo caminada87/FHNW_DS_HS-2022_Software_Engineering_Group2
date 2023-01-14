@@ -33,6 +33,11 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
+    
+    @app.route("/hello")
+    def hello_world():
+        return "<p>Hello, World!</p>"
+
     from . import auth
     app.register_blueprint(auth.bp)
 

@@ -19,7 +19,7 @@ def register():
         if not email:
             error = 'Die Email Adresse muss angegeben werden.'
         elif not password:
-            error = 'Ein Passwort wird ben&ouml;tigt.'
+            error = 'Bitte ein Passwort eingeben.'
         
         if error is None:
             try:
@@ -31,9 +31,8 @@ def register():
                 db.commit()
             except db.IntegrityError:
                 error = f"Die Email {email} ist bereits registriert."
-        else:
-            return redirect(url_for('auth.login'))
-
+            else:
+                return redirect(url_for('auth.login'))
         flash(error)
     return render_template('auth/register.html')
 
