@@ -80,14 +80,12 @@
         url.searchParams.set('id', id);
         url.searchParams.set('email', checkMail);
         url.searchParams.set('permId', checkPermissionId);
-        alert(url);
         xhr.open('GET', url);
         xhr.send();
         xhr.onload = function() {
             if (xhr.status != 200) { // analyze HTTP status of the response
                 alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
             } else { // show the result
-                alert(xhr.response);
                 let resp = JSON.parse(xhr.response);
                 if(resp.email == checkMail && resp.permission_id == checkPermissionId){
                     document.getElementById("update_" + id).hidden = true;

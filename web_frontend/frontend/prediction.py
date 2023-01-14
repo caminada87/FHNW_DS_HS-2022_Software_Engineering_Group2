@@ -56,10 +56,16 @@ def recent()->str:
         recent_predictions = db.execute(
             'SELECT id, user_id, query_data, predicted_price FROM predictions ORDER BY id DESC LIMIT 50'
         ).fetchall()
-    else:
+    elif g.user['permission_id'] >= 0:
         recent_predictions = db.execute(
-            f'SELECT id, user_id, query_data, predicted_price FROM predictions WHERE  ORDER BY id DESC LIMIT 50'
+            'SELECT id, user_id, query_data, predicted_price FROM predictions WHERE user_id = ? ORDER BY id DESC LIMIT 50',
+            (g.user['id'],)
         ).fetchall()
+    else:
+        error = 'Ihr Benutzerkonto wurde noch nicht von einem Administrator aufgeschaltet. Bitte probieren Sie es später wieder.'
+        flash(error)
+        return redirect(url_for('index'))
+
     predictions: list = []
     for prediction in recent_predictions:
         query_data = json.loads(prediction['query_data'])
