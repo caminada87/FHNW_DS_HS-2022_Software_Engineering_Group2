@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, url_for, send_from_directory
 from flask_restful import Api
 from flask_cors import CORS
 
@@ -21,7 +21,7 @@ def create_app(test_config=None):
 
     if test_config is None:
         #load the instance config, if it exists, when not testing
-        if os.path.exists('config.py'):
+        if os.path.exists(os.path.join(app.instance_path, 'config.py')):
             app.config.from_pyfile('config.py')
     else:
         #load the test config if passed in
@@ -41,6 +41,10 @@ def create_app(test_config=None):
     def hello_world():
         return "<p>Hello, World!</p>"
 
+    @app.route('/favicon.ico')
+    def favicon():
+        return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
     from . import auth
     app.register_blueprint(auth.bp)
 
@@ -58,5 +62,4 @@ def create_app(test_config=None):
     app.register_blueprint(api_bp)
 
     app.add_url_rule('/', endpoint='index')
-
     return app
