@@ -38,6 +38,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    # TESTING!
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -48,7 +49,7 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f ./web_frontend/requirements.txt ]; then pip install -r ./web_frontend/requirements.txt; fi
 
-    - name: Test with pytest
+    - name: Test with coverage and pytest
       run: |
         cd web_frontend
         coverage run -m pytest tests
