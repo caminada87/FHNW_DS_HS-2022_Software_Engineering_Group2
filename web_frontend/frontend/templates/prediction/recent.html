@@ -14,7 +14,7 @@
                   #
                 </th>
                 <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  User Ip
+                  User Id
                 </th>
                 <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
                   Längengrad
@@ -52,22 +52,22 @@
                   {{ prediction['id'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['user_ip'] }}
+                  {{ prediction['user_id'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['longitude'] }}
+                  {{ prediction['long'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['latitude'] }}
+                  {{ prediction['lat'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['postal_code'] }}
+                  {{ prediction['zipcode'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['city'] }}
+                  {{ prediction['municipality_name'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['building_category'] }}
+                  {{ prediction['object_type_name'] }}
                 </td>
                 <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
                   {{ prediction['build_year'] }}

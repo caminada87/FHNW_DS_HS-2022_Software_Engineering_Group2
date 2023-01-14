@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Blueprint, url_for, send_from_directory
+from flask import Flask, Blueprint, send_from_directory
 from flask_restful import Api
 from flask_cors import CORS
 
@@ -48,13 +48,16 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    from . import accounts
+    app.register_blueprint(accounts.bp)
+
     from . import prediction
     app.register_blueprint(prediction.bp)
 
     from .geolocator import GeoLocation
     from .predictor import HousePricePrediction
 
-    # API - For external use...
+    # API - For internal and external use...
     api_bp = Blueprint('api', __name__)
     api = Api(api_bp)
     api.add_resource(HousePricePrediction, '/HousePricePrediction')

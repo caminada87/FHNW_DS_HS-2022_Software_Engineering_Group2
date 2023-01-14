@@ -15,52 +15,35 @@ bp = Blueprint('prediction', __name__)
 @login_required
 def index()->str:
     if request.method == 'POST':
-        longitude: float = request.form['longitude']
-        latitude: float = request.form['latitude']
-        postal_code: int = request.form['postal_code']
-        city: str = request.form['city']
-        bulding_category: str = request.form['bulding_category']
-        build_year: int = request.form['build_year']
-        living_area: float = request.form['living_area']
-        num_rooms: float = request.form['num_rooms']
-
-        params: dict = {'longitude':longitude,
-                'latitude':latitude,
-                'postal_code':postal_code,
-                'city':city,
-                'bulding_category':bulding_category,
-                'build_year':build_year,
-                'living_area':living_area,
-                'num_rooms':num_rooms
+        params: dict = {'longitude':request.form['longitude'],
+                'latitude':request.form['latitude'],
+                'postal_code':request.form['postal_code'],
+                'city':request.form['city'],
+                'bulding_category':request.form['bulding_category'],
+                'build_year':request.form['build_year'],
+                'living_area':request.form['living_area'],
+                'num_rooms':request.form['num_rooms'],
+                'user_id':g.user['id']
         }
 
-        params_json: str = json.dumps(params)
+        response = urlfetch.fetch(
+            url= f"{current_app.config['BASE_URL']}/HousePricePrediction",
+            params=params,
+            method=urlfetch.GET,
+            validate_certificate=True
+        )
 
-        print('before get:')
-        try:
+        if response.status_code == 204:
             response = urlfetch.fetch(
-                url= f"{current_app.config['BASE_URL']}/HousePricePrediction",
+                url=f"{current_app.config['BASE_URL']}/HousePricePrediction",
+                contentType="application/json",
                 params=params,
-                method=urlfetch.GET,
+                method=urlfetch.PUT,
                 validate_certificate=True
             )
-            print('response:')
-            #print(response)
-            if response.status_code == 200:
-                response_json = response.content.decode('utf-8')
-                #response_json: str = json.dumps(response)
-                #response_json = json.dumps({"predicted_price":790000})
-                db = get_db()
-                db.execute(f"INSERT INTO predictions (user_ip, query_data, predicted_price) VALUES ('127.0.0.1', '{params_json}', '{response_json}')")
-                db.commit()
-                return redirect(url_for('prediction.recent'))
-            else:
-                print (response.content)
-                return render_template('prediction/index.html')
-        except Exception as err:
-            print('Exception!')
-            print(err)
-            return render_template('prediction/index.html')
+        else:
+            print('bereits geschätzt!')
+        return redirect(url_for('prediction.recent'))
     else:
         return render_template('prediction/index.html', base_url=current_app.config['BASE_URL'])
 
@@ -69,27 +52,29 @@ def index()->str:
 def recent()->str:
     db = get_db()
     #list of tuples
-    recent_predictions = db.execute(
-        'SELECT id, user_ip, query_data, predicted_price FROM predictions ORDER BY id DESC LIMIT 50'
-    ).fetchall()
+    if g.user['permission_id'] >= 2:
+        recent_predictions = db.execute(
+            'SELECT id, user_id, query_data, predicted_price FROM predictions ORDER BY id DESC LIMIT 50'
+        ).fetchall()
+    else:
+        recent_predictions = db.execute(
+            f'SELECT id, user_id, query_data, predicted_price FROM predictions WHERE  ORDER BY id DESC LIMIT 50'
+        ).fetchall()
     predictions: list = []
     for prediction in recent_predictions:
         query_data = json.loads(prediction['query_data'])
         prediction_data = json.loads(prediction['predicted_price'])
-        #import locale
-        #Doesn't work in Docker container:
-        #locale.setlocale(locale.LC_ALL, 'en_US.utf8')
-        predictions.append({'id': str(prediction['id']), 
-                            'user_ip': prediction['user_ip'],
-                            'longitude': query_data['longitude'],
-                            'latitude': query_data['latitude'], 
-                            'postal_code': query_data['postal_code'], 
-                            'city': query_data['city'],
-                            'building_category': query_data['bulding_category'],
+
+        predictions.append({'id': prediction['id'], 
+                            'user_id': prediction['user_id'],
+                            'long': query_data['long'],
+                            'lat': query_data['lat'], 
+                            'zipcode': query_data['zipcode'], 
+                            'municipality_name': query_data['municipality_name'],
+                            'object_type_name': query_data['object_type_name'],
                             'build_year': query_data['build_year'],
                             'living_area': query_data['living_area'],
                             'num_rooms': query_data['num_rooms'],
-                            #'prediction': f"{int(prediction_data['predicted_price']):n}.- CHF".replace(',', '\'')
                             'prediction': prediction_data['predicted_price']
                           })
     return render_template('prediction/recent.html', recent_predictions=predictions)

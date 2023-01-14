@@ -32,7 +32,11 @@ INSERT INTO user (email, permission_id, password) VALUES ('thipeesan.thirunavukk
 
 CREATE TABLE predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_ip TEXT NOT NULL,
+    user_id INT NOT NULL,
     query_data TEXT NOT NULL,
-    predicted_price TEXT NOT NULL
+    predicted_price TEXT NOT NULL,
+    FOREIGN KEY (user_id) 
+      REFERENCES user (id) 
+         ON DELETE NO ACTION
+         ON UPDATE CASCADE
 );

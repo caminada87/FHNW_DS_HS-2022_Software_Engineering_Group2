@@ -74,19 +74,20 @@
     function checkEntryDBDiff(id){
         let xhr = new XMLHttpRequest();
         let base_url = document.getElementById("BASE_URL").value;
-        let url = new URL(base_url + '/auth/account');
+        let url = new URL(base_url + '/accounts/account');
         let checkMail = document.getElementById("email_" + id).value;
         let checkPermissionId = document.getElementById("permission_id_" + id).value;
         url.searchParams.set('id', id);
         url.searchParams.set('email', checkMail);
         url.searchParams.set('permId', checkPermissionId);
-        xhr.open('GET', url)
+        alert(url);
+        xhr.open('GET', url);
         xhr.send();
         xhr.onload = function() {
             if (xhr.status != 200) { // analyze HTTP status of the response
                 alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
             } else { // show the result
-                //alert(xhr.response)
+                alert(xhr.response);
                 let resp = JSON.parse(xhr.response);
                 if(resp.email == checkMail && resp.permission_id == checkPermissionId){
                     document.getElementById("update_" + id).hidden = true;
@@ -99,13 +100,13 @@
     function updateEntry(id){
         let xhr = new XMLHttpRequest();
         let base_url = document.getElementById("BASE_URL").value;
-        let url = new URL(base_url + '/auth/account');
+        let url = new URL(base_url + '/accounts/account');
         let updateMail = document.getElementById("email_" + id).value;
         let updatePermissionId = document.getElementById("permission_id_" + id).value;
         url.searchParams.set('id', id);
         url.searchParams.set('email', updateMail);
         url.searchParams.set('permId', updatePermissionId);
-        xhr.open('POST', url)
+        xhr.open('POST', url);
         xhr.send();
         xhr.onload = function() {
             if (xhr.status != 200) { // analyze HTTP status of the response
@@ -119,15 +120,15 @@
     function deleteEntry(id){
         let xhr = new XMLHttpRequest();
         let base_url = document.getElementById("BASE_URL").value;
-        let url = new URL(base_url + '/auth/account');
+        let url = new URL(base_url + '/accounts/account');
         url.searchParams.set('id', id);
-        xhr.open('DELETE', url)
+        xhr.open('DELETE', url);
         xhr.send();
         xhr.onload = function() {
             if (xhr.status != 200) { // analyze HTTP status of the response
                 alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
             } else { // show the result
-                window.location.href = base_url + '/auth/accounts'
+                window.location.href = base_url + '/accounts/accounts';
             }
         };
     }
