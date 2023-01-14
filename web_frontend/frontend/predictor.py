@@ -26,8 +26,6 @@ class HousePricePrediction(Resource):
     def get(self):
         args = self.parser.parse_args()
 
-        # print(self.filename)
-
         longitude: float = float(args['longitude'])
         latitude: float = float(args['latitude'])
         postal_code: int = int(args['postal_code'])
@@ -48,7 +46,6 @@ class HousePricePrediction(Resource):
 
         data_frame = pd.DataFrame(data=request_dict, index=[0])
         prediction: int = int(self.model.predict(data_frame)[0])
-        print('Antwort:')
-        print(prediction)
+
         answer = jsonify({'predicted_price': prediction})
         return answer

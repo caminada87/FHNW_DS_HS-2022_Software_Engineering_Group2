@@ -11,9 +11,8 @@ import pandas as pd
 
 bp = Blueprint('prediction', __name__)
 
-
-@bp.route('/', methods=['GET', 'POST'])
 @login_required
+@bp.route('/', methods=['GET', 'POST'])
 def index() -> str:
     if request.method == 'POST':
         filename: str = current_app.config['MODEL']
