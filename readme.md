@@ -1,5 +1,8 @@
 # FHNW DAS Data Science - Software Engineering Project
 
+House-Price-Predictor-App
+Check-out: https://fhnw-ds-hs-2022-software-engineering-group-prod-ao7fiu5bra-oa.a.run.app/
+
 ## Project team
 - Roman Sonder
 - Adrian Hausmann
@@ -26,10 +29,34 @@ This is the chosen architecture for our "House-Price-Predictor-App":
 
 ## Project Log:
 
+**14.01.2023**
+- Running some pytests
+- Code cleaning
+- documenation 
+
+**12.01.2023**
+- Team Meeting
+- Created Prod-Service on GCP: fhnw-ds-hs-2022-software-engineering-group-prod
+- Merging to Main-Branch
+
+**09.01.2023**
+- Team Meeting
+
+**02.01.2023**
+- CI/CD-Pipeline with GitHub Actions
+
+**30.12.2022**
+- generated private keys on GCP
+- Secrets on GitHub
+
+> **17.12.2022**
+- Presentation Software-Architectur @ FHNW
+
 > **16.12.2022**
 - Integrated Software-Architectur  
 
 > **30.11.2022**
+- Created Dev-Service on GCP: fhnw-ds-hs-2022-software-engineering-group2
 - Created FHNW-Software-Eng-Group2 on Google Cloud Plattform  
 
 > **29.11.2022**
