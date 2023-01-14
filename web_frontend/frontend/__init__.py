@@ -11,15 +11,18 @@ def create_app(test_config=None):
     CORS(app)
     
     app.config.from_mapping(
-        #should be overwritten on deployment (random value)
+        #gets overwritten in container... --> Dockerfiles
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'frontend.sqlite'),
-        MODEL=os.path.join(app.instance_path, '../frontend/static/decision_tree_model.sav')
+        MODEL=os.path.join(app.instance_path, '../frontend/static/decision_tree_model.sav'),
+        BASE_URL='http://localhost:5000',
+        TESTING=False
     )
 
     if test_config is None:
         #load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py')
+        if os.path.exists('config.py'):
+            app.config.from_pyfile('config.py')
     else:
         #load the test config if passed in
         app.config.from_mapping(test_config)
