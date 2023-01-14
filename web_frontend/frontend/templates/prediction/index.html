@@ -76,6 +76,7 @@
             <div class="bg-gray-50 bg-opacity-90 px-4 py-3 text-right sm:px-6">
               <button type="submit" value="Predict" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Schätzen!</button>
             </div>
+            <input type = "hidden" id = "BASE_URL" value="{{ base_url }}" />
           </div>
         </form>
       </div>
@@ -84,9 +85,8 @@
 <script type="application/javascript">
     function getGeoLocation() {
         let xhr = new XMLHttpRequest();
-        //https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        let url = new URL('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/GeoLocation');
-        //let url = new URL('http://127.0.0.1:5000/GeoLocation');
+        let base_url = document.getElementById("BASE_URL").value;
+        let url = new URL(base_url + '/GeoLocation');
         let postal_code = document.getElementById("postal_code").value;
         let city = document.getElementById("city").value;
         let street_address = document.getElementById("street_address").value;
@@ -104,7 +104,6 @@
                 let resp = JSON.parse(xhr.response)
                 document.getElementById("latitude").value = String(resp.latitude);
                 document.getElementById("longitude").value = String(resp.longitude);
-                //alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
             }
         }; 
     }

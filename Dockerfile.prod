@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED True
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY ./web_frontend ./
+COPY ./settings/config_prod.py ./instance/config.py
 
 # Install production dependencies.
 RUN pip install -r requirements.txt

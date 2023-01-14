@@ -1,7 +1,7 @@
 import functools
 
 from flask import(
-    Blueprint, flash, g , redirect, render_template, request, session, url_for, jsonify
+    Blueprint, flash, g , redirect, render_template, request, session, url_for, jsonify, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from frontend.db import get_db
@@ -93,7 +93,7 @@ def login_required(view):
 @login_required
 def accounts():
     #nur admins!
-    if g.user['permission_id'] == 2:
+    if g.user['permission_id'] >= 2:
         db = get_db()
         #list of tuples
         accounts = db.execute(
@@ -102,7 +102,7 @@ def accounts():
         permissions = db.execute(
             'SELECT id, permission_name FROM permission ORDER BY id'
         ).fetchall()
-        return render_template('auth/accounts.html', accounts=accounts, permissions=permissions)
+        return render_template('auth/accounts.html', accounts=accounts, permissions=permissions, base_url=current_app.config['BASE_URL'])
     else:
         return redirect(url_for('auth.login'))
 
@@ -111,7 +111,7 @@ def accounts():
 def account():
     #nur admins!
     #print('test1')
-    if g.user['permission_id'] == 2:
+    if g.user['permission_id'] >= 2:
         user_form_id: int = int(request.args.get('id'))
         if request.method == 'GET':
             db = get_db()

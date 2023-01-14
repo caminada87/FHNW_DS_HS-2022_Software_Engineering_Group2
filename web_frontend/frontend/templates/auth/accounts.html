@@ -65,6 +65,7 @@
               {% endfor %}
             </tbody>
           </table>
+          <input type = "hidden" id = "BASE_URL" value="{{ base_url }}" />
         </div>
       </div>
     </div>
@@ -72,9 +73,8 @@
 <script type="application/javascript">
     function checkEntryDBDiff(id){
         let xhr = new XMLHttpRequest();
-        //https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        //let url = new URL('http://localhost:5000/auth/account');
-        let url = new URL('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/auth/account');
+        let base_url = document.getElementById("BASE_URL").value;
+        let url = new URL(base_url + '/auth/account');
         let checkMail = document.getElementById("email_" + id).value;
         let checkPermissionId = document.getElementById("permission_id_" + id).value;
         url.searchParams.set('id', id);
@@ -98,9 +98,8 @@
     }
     function updateEntry(id){
         let xhr = new XMLHttpRequest();
-        //https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        //let url = new URL('http://localhost:5000/auth/account');
-        let url = new URL('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/auth/account');
+        let base_url = document.getElementById("BASE_URL").value;
+        let url = new URL(base_url + '/auth/account');
         let updateMail = document.getElementById("email_" + id).value;
         let updatePermissionId = document.getElementById("permission_id_" + id).value;
         url.searchParams.set('id', id);
@@ -119,9 +118,8 @@
     }
     function deleteEntry(id){
         let xhr = new XMLHttpRequest();
-        //https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/
-        //let url = new URL('http://localhost:5000/auth/account');
-        let url = new URL('https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app/auth/account');
+        let base_url = document.getElementById("BASE_URL").value;
+        let url = new URL(base_url + '/auth/account');
         url.searchParams.set('id', id);
         xhr.open('DELETE', url)
         xhr.send();
