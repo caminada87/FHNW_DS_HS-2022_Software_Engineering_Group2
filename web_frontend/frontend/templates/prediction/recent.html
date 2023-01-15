@@ -1,92 +1,103 @@
 {% extends 'base.html' %}
 {% block header %}
-  <h1>{% block title %}Recent Predictions{% endblock %}</h1>
+    <h1>{% block title %}Recent Predictions{% endblock %}</h1>
 {% endblock %}
 {% block content %}
-  <div class="flex flex-col">
-    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="overflow-hidden">
-          <table class="min-w-full">
-            <thead class="border-b">
-              <tr>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  #
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  User Id
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Längengrad
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Breitengrad
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Postleitzahl
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Ort
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Geb&auml;udetyp
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Baujahr
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Wohnfl&auml;che
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Anzahl Zimmer
-                </th>
-                <th scope="col" class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
-                  Sch&auml;tzwert
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for prediction in recent_predictions %}
-              <tr class="border-b">
-                <td class="px-6 py-4 bg-white bg-opacity-95 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {{ prediction['id'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['user_id'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['long'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['lat'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['zipcode'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['municipality_name'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['object_type_name'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['build_year'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['living_area'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['num_rooms'] }}
-                </td>
-                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
-                  {{ prediction['prediction'] }}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="overflow-hidden">
+                    <table class="min-w-full">
+                        <thead class="border-b">
+                        <tr>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                #
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                User Id
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Längengrad
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Breitengrad
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Postleitzahl
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Ort
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Geb&auml;udetyp
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Baujahr
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Wohnfl&auml;che
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Anzahl Zimmer
+                            </th>
+                            <th scope="col"
+                                class="text-sm bg-white bg-opacity-80 font-medium text-gray-900 px-6 py-4 text-left">
+                                Sch&auml;tzwert
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for prediction in recent_predictions %}
+                            <tr class="border-b">
+                                <td class="px-6 py-4 bg-white bg-opacity-95 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ prediction['id'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['user_id'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['long'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['lat'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['zipcode'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['municipality_name'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['object_type_name'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['build_year'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['living_area'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['num_rooms'] }}
+                                </td>
+                                <td class="text-sm bg-white bg-opacity-95 text-gray-900 text-right font-light px-6 py-4 whitespace-nowrap">
+                                    {{ prediction['prediction'] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 {% endblock %}

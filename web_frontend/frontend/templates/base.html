@@ -2,20 +2,21 @@
 <title>{% block title %}{% endblock %} - System Engineering Project</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
 <body class="bg-opacity-50 bg-[url('/static/img/bg.jpg')] bg-cover bg-no-repeat">
-    <div class="flex flex-col space-y-3">
-        <div class="flex w-full">
-            {% include 'nav.html' %}
-        </div>
-        <div class="flex flex-col w-full justify-center">
-            {% for message in get_flashed_messages() %}
-                <div class="bg-yellow-100 rounded-lg py-5 px-6 mb-4 text-base text-yellow-700 mb-3" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            <div class="flex w-full justify-center">
-                {% block content %}{% endblock %}
+<div class="flex flex-col space-y-3">
+    <div class="flex w-full">
+        {% include 'nav.html' %}
+    </div>
+    <div class="flex flex-col w-full justify-center">
+        {% for message in get_flashed_messages() %}
+            <div class="bg-yellow-100 rounded-lg py-5 px-6 mb-4 text-base text-yellow-700 mb-3"
+                 role="alert">
+                {{ message }}
             </div>
-        </div>
+        {% endfor %}
+        <div class="flex w-full justify-center">
+            {% block content %}{% endblock %}
         </div>
     </div>
+</div>
+</div>
 </body>
