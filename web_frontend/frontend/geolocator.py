@@ -1,4 +1,3 @@
-
 from geopy.geocoders import Nominatim
 from flask import jsonify
 from flask_restful import Resource, reqparse
