@@ -1,12 +1,9 @@
-import os
-import sys
 import pickle
 import pandas as pd
 import json
-from flask import jsonify, g
+
+from flask import jsonify, current_app
 from flask_restful import Resource, reqparse
-from flask import current_app
-from .auth import login_required
 from frontend.db import get_db
 
 
@@ -28,9 +25,12 @@ class HousePricePrediction(Resource):
             self.model = pickle.load(pickle_file)
 
     def get(self):
+        """
+
+        """
         predictions = []
         args = self.parser.parse_args()
-        
+
         request_dict = {'long': float(args['longitude']),
                         'lat': float(args['latitude']),
                         'zipcode': int(args['postal_code']),
@@ -38,10 +38,10 @@ class HousePricePrediction(Resource):
                         'object_type_name': str(args['bulding_category']),
                         'build_year': int(args['build_year']),
                         'living_area': float(args['living_area']),
-                        'num_rooms':  float(args['num_rooms'])}
-        
+                        'num_rooms': float(args['num_rooms'])}
+
         request_json = json.dumps(request_dict)
-        
+
         db = get_db()
         predictions_db = db.execute(
             'SELECT id, user_id, query_data, predicted_price FROM predictions WHERE query_data = ?', (request_json,)
@@ -49,10 +49,10 @@ class HousePricePrediction(Resource):
 
         for prediction in predictions_db:
             prediction_dict = {'id': int(prediction['id']),
-                'user_id': int(prediction['user_id']),
-                'query_data': str(prediction['query_data']),
-                'predicted_price': str(prediction['predicted_price'])
-            }
+                               'user_id': int(prediction['user_id']),
+                               'query_data': str(prediction['query_data']),
+                               'predicted_price': str(prediction['predicted_price'])
+                               }
             predictions.append(prediction_dict)
         print(len(predictions))
         if len(predictions) == 0:
@@ -61,7 +61,7 @@ class HousePricePrediction(Resource):
 
     def put(self):
         args = self.parser.parse_args()
-        
+
         request_dict = {'long': float(args['longitude']),
                         'lat': float(args['latitude']),
                         'zipcode': int(args['postal_code']),
@@ -69,7 +69,7 @@ class HousePricePrediction(Resource):
                         'object_type_name': str(args['bulding_category']),
                         'build_year': int(args['build_year']),
                         'living_area': float(args['living_area']),
-                        'num_rooms':  float(args['num_rooms'])}
+                        'num_rooms': float(args['num_rooms'])}
 
         data_frame = pd.DataFrame(data=request_dict, index=[0])
         prediction: int = int(self.model.predict(data_frame)[0])
@@ -78,9 +78,9 @@ class HousePricePrediction(Resource):
 
         db = get_db()
         db.execute(f"INSERT INTO predictions (user_id, query_data, predicted_price) VALUES (?,?,?)",
-            (args['user_id'], request_json, response_json,)
-        )
+                   (args['user_id'], request_json, response_json,)
+                   )
         db.commit()
 
-        answer = jsonify( {'predicted_price': prediction} )
+        answer = jsonify({'predicted_price': prediction})
         return answer
