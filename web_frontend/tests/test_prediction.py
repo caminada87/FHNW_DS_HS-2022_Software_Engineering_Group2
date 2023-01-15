@@ -1,3 +1,6 @@
+import pytest
+from frontend.db import get_db
+
 def test_index(client, auth):
     """Tests redirection if not logged and Home page display if logged in."""
     response = client.get('/')
