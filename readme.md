@@ -29,30 +29,41 @@ This is the chosen architecture for our "House-Price-Predictor-App":
 
 ## Project Log:
 
-**15.01.2023**
+> **15.01.2023**
 - Format code with black "black --line-length 79"
 - Check code with flask8
 - Insert docstrings
 
-**14.01.2023**
+> **14.01.2023**
 - Running some pytests
 - Code cleaning
 - documenation 
 
-**12.01.2023**
+> **13.01.2023**
+- Finally getting predictions running on GCR - the issue was that 2 requests had to run parallel and the gunicorn webserver was running with just 1 worker. It took some days to fix that.
+
+> **12.01.2023**
 - Team Meeting
 - Created Prod-Service on GCP: fhnw-ds-hs-2022-software-engineering-group-prod
 - Merging to Main-Branch
 
-**09.01.2023**
+> **09.01.2023**
 - Team Meeting
 
-**02.01.2023**
+> **02.01.2023**
 - CI/CD-Pipeline with GitHub Actions
 
-**30.12.2022**
+> **30.12.2022**
 - generated private keys on GCP
 - Secrets on GitHub
+
+> **24.12.2022 - 03.01.2023**
+- Get CI/CD Pipeline running
+- Thinned out the application as 2 containers using docker-compose was quite a hard entry to get into this topic. Everything is now a single app.
+- Get Homepage and API's running on GCR
+
+> **-24.12.2022**
+- Finalize first version of the frontend and api
 
 > **17.12.2022**
 - Presentation Software-Architectur @ FHNW
