@@ -5,7 +5,7 @@ from geopy.geocoders import Nominatim
 
 
 class GeoLocation(Resource):
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize the location parameters.
         """
