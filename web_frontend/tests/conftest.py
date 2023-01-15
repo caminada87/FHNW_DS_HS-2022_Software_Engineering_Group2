@@ -1,7 +1,7 @@
 import os
 import tempfile
-
 import pytest
+
 from frontend import create_app
 from frontend.db import get_db, init_db
 
@@ -10,7 +10,10 @@ with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
 
 
 @pytest.fixture
-def app():
+def app() -> None:
+    """
+
+    """
     db_fd, db_path = tempfile.mkstemp()
 
     app = create_app({
@@ -41,6 +44,7 @@ def runner(app):
 
 class AuthActions(object):
     """The user has to be logged in most of the times. Also during testing..."""
+
     def __init__(self, client):
         self._client = client
 
