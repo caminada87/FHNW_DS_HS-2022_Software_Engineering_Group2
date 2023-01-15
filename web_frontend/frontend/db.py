@@ -6,18 +6,18 @@ from flask import current_app, g
 def get_db() -> sqlite3.Connection:
     """
     Get connection to sql database
-    @return: sql connection
+    @return: connection to sql
     """
     if "db" not in g:
         g.db = sqlite3.connect(
             current_app.config["DATABASE"],
-            detect_types=sqlite3.PARSE_DECLTYPES
+            detect_types=sqlite3.PARSE_DECLTYPES,
         )
         g.db.row_factory = sqlite3.Row
     return g.db
 
 
-def close_db() -> None:
+def close_db(e=None) -> None:
     """
     Close connection to database.
     """
@@ -38,7 +38,7 @@ def init_db() -> None:
 
 
 @click.command("init-db")
-def init_db_command() -> None:
+def init_db_command():
     """
     Clear the existing data and create new tables.
     """
@@ -46,7 +46,7 @@ def init_db_command() -> None:
     click.echo("Initialized the database.")
 
 
-def init_app(app) -> None:
+def init_app(app):
     """
     Initialize app.
     @param app: web frontend app
