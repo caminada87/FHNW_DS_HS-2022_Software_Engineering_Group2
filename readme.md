@@ -29,6 +29,11 @@ This is the chosen architecture for our "House-Price-Predictor-App":
 
 ## Project Log:
 
+**15.01.2023**
+- Format code with black "black --line-length 79"
+- Check code with flask8
+- Insert docstrings
+
 **14.01.2023**
 - Running some pytests
 - Code cleaning
