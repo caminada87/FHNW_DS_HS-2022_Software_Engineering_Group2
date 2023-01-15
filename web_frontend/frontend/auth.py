@@ -1,6 +1,5 @@
 import functools
 from typing import Callable, Any
-
 from flask import (
     Blueprint,
     flash,
@@ -11,9 +10,9 @@ from flask import (
     session,
     url_for,
 )
-from frontend.db import get_db
 from werkzeug import Response
 from werkzeug.security import check_password_hash, generate_password_hash
+from frontend.db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 

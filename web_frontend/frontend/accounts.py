@@ -8,10 +8,10 @@ from flask import (
     jsonify,
     current_app,
 )
-
+from werkzeug import Response
 from frontend.auth import login_required
 from frontend.db import get_db
-from werkzeug import Response
+
 
 bp = Blueprint("accounts", __name__, url_prefix="/accounts")
 
