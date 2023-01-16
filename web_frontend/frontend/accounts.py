@@ -61,8 +61,6 @@ def account() -> Response | Response:
         if request.method == "GET":
             db = get_db()
             user_form_id: int = int(request.args.get("id"))
-            user_form_mail: str = request.args.get("email")
-            user_form_permission_id: int = int(request.args.get("permId"))
 
             ad_account = db.execute(
                 f"SELECT id, email, permission_id "

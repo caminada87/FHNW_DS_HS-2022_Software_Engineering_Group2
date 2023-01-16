@@ -78,8 +78,6 @@
         let checkMail = document.getElementById("email_" + id).value;
         let checkPermissionId = document.getElementById("permission_id_" + id).value;
         url.searchParams.set('id', id);
-        url.searchParams.set('email', checkMail);
-        url.searchParams.set('permId', checkPermissionId);
         xhr.open('GET', url);
         xhr.send();
         xhr.onload = function() {
