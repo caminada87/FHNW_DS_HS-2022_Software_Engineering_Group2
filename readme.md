@@ -27,7 +27,7 @@ The main task is to implement a small machinelearning model and get it to produc
 This is the chosen architecture for our "House-Price-Predictor-App":
 ![Architecture House-Price-Predictor-App](https://github.com/caminada87/FHNW_DS_HS-2022_Software_Engineering_Group2/blob/dev/images/SW-Eng_Gruppe-2_Architektur_House-Price-Predictor_v1.png)
 
-### Frontend/API Manual
+## Frontend/API Manual
 
 Hint: This project is built using the Application Factory pattern as proposed by flask.
 
@@ -60,6 +60,10 @@ Not logged in - Can register to get an Account with permission -1 (Needs to be c
 1: SuperUser - Can login can predict and can see his recent 50 predictions
 2: Admin - Can login can predict can see all predictions (all users) can update and delete accounts
 3: SuperAdmin - Can login can predict can see all predictions (all users) can update and delete accounts
+
+## GCloud hosted links
+> Prod: https://fhnw-ds-hs-2022-software-engineering-group-prod-ao7fiu5bra-oa.a.run.app
+> Dev: https://fhnw-ds-hs-2022-software-engineering-group2-ao7fiu5bra-oa.a.run.app
 
 ## Project Log:
 
