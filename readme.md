@@ -27,6 +27,40 @@ The main task is to implement a small machinelearning model and get it to produc
 This is the chosen architecture for our "House-Price-Predictor-App":
 ![Architecture House-Price-Predictor-App](https://github.com/caminada87/FHNW_DS_HS-2022_Software_Engineering_Group2/blob/dev/images/SW-Eng_Gruppe-2_Architektur_House-Price-Predictor_v1.png)
 
+### Frontend/API Manual
+
+Hint: This project is built using the Application Factory pattern as proposed by flask.
+
+**Clone/Start/Test Project**
+
+1. Clone this Project
+2. cd to the main directory: ```cd [YOUR_PATH]\FHNW_DS_HS-2022_Software_Engineering_Group2```
+3. Initialize the (sqlite3) Database: ```flask --app ./web_frontend/frontend init-db```
+4. Run the app: ```flask --app ./web_frontend/frontend --debug run```
+5. To run the tests change into the web_frontend directory ```cd .\web_frontend\```
+6. Run Tests: ```coverage run -m pytest```
+
+**Start the pytailwind CSS watcher / generate CSS for Prod:**
+
+1. cd to the tailwind directory: ```cd [YOUR_PATH]\FHNW_DS_HS-2022_Software_Engineering_Group2\web_frontend\frontend\tailwind```
+2. Start the watcher process: ```tailwindcss -i .\input.css -o ..\static\output.css --watch```
+3. On deployment minify the css: ```tailwindcss -i .\input.css -o ..\static\output.css --minify```
+
+**Accountmanagement:**
+
+If you are using different environments in the same Browser and you experience troubles in the "Accountmanagememt" page:
+1. Close all Browser Tabs
+2. Delete your Browser Data
+3. Log in again (To get a clean fresh Session)
+
+**Permissions**
+Not logged in - Can register to get an Account with permission -1 (Needs to be changed by >= Admin)
+-1: Unregistered - Can login but cannot do anything
+0: User - Can login can predict and can see his recent 50 predictions
+1: SuperUser - Can login can predict and can see his recent 50 predictions
+2: Admin - Can login can predict can see all predictions (all users) can update and delete accounts
+3: SuperAdmin - Can login can predict can see all predictions (all users) can update and delete accounts
+
 ## Project Log:
 
 > **15.01.2023**

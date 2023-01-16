@@ -37,6 +37,8 @@ class GeoLocation(Resource):
         loc = geolocator.geocode(
             f"{street_num}, {street_address}, {city}, {postal_code}, Schweiz"
         )
+        if loc == None:
+            return '', 204
         answer = jsonify(
             {"latitude": loc.latitude, "longitude": loc.longitude}
         )
