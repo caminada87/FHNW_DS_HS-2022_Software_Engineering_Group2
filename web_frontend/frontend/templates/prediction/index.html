@@ -19,32 +19,32 @@
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
                   <label for="postal_code" class="block text-sm font-medium text-gray-700">Postleitzahl</label>
-                  <input onchange="getGeoLocation()" type="text" name="postal_code" id="postal_code" autocomplete="postal-code" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input onchange="getGeoLocation('postal_code')" type="text" name="postal_code" id="postal_code" autocomplete="postal-code" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                   <label for="city" class="block text-sm font-medium text-gray-700">Gemeinde</label>
-                  <input onchange="getGeoLocation()" type="text" name="city" id="city" autocomplete="address-level2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input onchange="getGeoLocation('city')" type="text" name="city" id="city" autocomplete="address-level2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-5">
                   <label for="street_address" class="block text-sm font-medium text-gray-700">Strasse</label>
-                  <input onchange="getGeoLocation()" type="text" name="street_address" id="street_address" autocomplete="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input onchange="getGeoLocation('street_address')" type="text" name="street_address" id="street_address" autocomplete="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-1">
                   <label for="street_num" class="block text-sm font-medium text-gray-700">HausNr.</label>
-                  <input onchange="getGeoLocation()" type="text" name="street_num" id="street_num" autocomplete="street-num" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input onchange="getGeoLocation('street_num')" type="text" name="street_num" id="street_num" autocomplete="street-num" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                   <label for="latitude" class="block text-sm font-medium text-gray-700">Breitengrad (Latitude)</label>
-                  <input type="text" name="latitude" id="latitude" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input type="number" name="latitude" id="latitude" step="0.0000000000000001" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                   <label for="longitude" class="block text-sm font-medium text-gray-700">L&auml;ngengrad (Longitude)</label>
-                  <input type="text" name="longitude" id="longitude" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input type="number" name="longitude" id="longitude" step="0.0000000000000001" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6">
@@ -59,17 +59,17 @@
 
                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                   <label for="living_area" class="block text-sm font-medium text-gray-700">Wohnfl&auml;che</label>
-                  <input type="text" name="living_area" id="living_area" autocomplete="living-area" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input type="number" name="living_area" id="living_area" autocomplete="living-area" step="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label for="num_rooms" class="block text-sm font-medium text-gray-700">Anzahl Zimmer</label>
-                  <input type="text" name="num_rooms" id="num_rooms" autocomplete="num-rooms" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input type="number" name="num_rooms" id="num_rooms" autocomplete="num-rooms" step="0.5" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
 
                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                   <label for="build_year" class="block text-sm font-medium text-gray-700">Baujahr</label>
-                  <input type="text" name="build_year" id="build_year" autocomplete="build-year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <input type="number" name="build_year" id="build_year" autocomplete="build-year" min="1500" max="2500" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 </div>
               </div>
             </div>
@@ -83,7 +83,7 @@
     </div>
   </div>
 <script type="application/javascript">
-    function getGeoLocation() {
+    function getGeoLocation(domId) {
         let xhr = new XMLHttpRequest();
         let base_url = document.getElementById("BASE_URL").value;
         let url = new URL(base_url + '/GeoLocation');
@@ -98,9 +98,15 @@
         xhr.open('GET', url)
         xhr.send();
         xhr.onload = function() {
-            if (xhr.status != 200) { // analyze HTTP status of the response
+            if (xhr.status == 204){
+                //do nothing - lat/long not found
+                document.getElementById(domId).classList.add("border-rose-600")
+                document.getElementById(domId).classList.remove("border-gray-300")
+            } else if (xhr.status != 200) { // analyze HTTP status of the response
                 alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
             } else { // show the result
+                document.getElementById(domId).classList.add("border-gray-300")
+                document.getElementById(domId).classList.remove("border-rose-600")
                 let resp = JSON.parse(xhr.response)
                 document.getElementById("latitude").value = String(resp.latitude);
                 document.getElementById("longitude").value = String(resp.longitude);

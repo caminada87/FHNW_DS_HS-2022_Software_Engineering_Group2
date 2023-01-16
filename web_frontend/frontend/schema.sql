@@ -44,6 +44,21 @@ VALUES ('adrian.hausmann@students.fhnw.ch', 2,
 INSERT INTO user (email, permission_id, password)
 VALUES ('thipeesan.thirunavukkarasu@fhnw.ch', 2,
         'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
+INSERT INTO user (email, permission_id, password)
+VALUES ('test1@test.ch', -1,
+        'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
+INSERT INTO user (email, permission_id, password)
+VALUES ('test2@test.ch', 0,
+        'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
+INSERT INTO user (email, permission_id, password)
+VALUES ('test3@test.ch', 1,
+        'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
+INSERT INTO user (email, permission_id, password)
+VALUES ('test4@test.ch', 2,
+        'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
+INSERT INTO user (email, permission_id, password)
+VALUES ('test5@test.ch', 3,
+        'pbkdf2:sha256:260000$IioHQNBimvlYay98$d930f1e110f4d5fea3e69ce7251a8c80ea935cbac477d3c23165d51590d9326a');
 
 CREATE TABLE predictions
 (
